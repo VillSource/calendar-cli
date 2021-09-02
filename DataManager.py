@@ -1,4 +1,4 @@
-import sqlite3,sys,os
+import sqlite3,sys,os,datetime
 
 database = "data/schedule.db"
 
@@ -8,12 +8,14 @@ def getPath(filename):
 
 
 def executeSQL(command):
+    data =None
     try:
         with sqlite3.connect(getPath(database)) as con:
-            con.execute(command)
+            data = con.execute(command)
     except Exception as e:
         print(f"Error ->{e}")
-        
+    return data
+
 
 def creatTable(table):
     executeSQL(f'''
@@ -24,6 +26,20 @@ def creatTable(table):
     ''')
 
 
+def insertData(table,data,date=datetime.date.today()):
+    executeSQL(f"""
+        insert into {table} values("{data}",julianday({date}))
+    """)
+
+def selectTable(table):
+    return executeSQL(f"""
+        select * from {table}
+    """)
 
 
-creatTable("Anriut")
+
+# creatTable("Anirut")
+# insertData("Anirut","bey")
+
+# for row in selectTable("Anirut"):
+#     print(row)

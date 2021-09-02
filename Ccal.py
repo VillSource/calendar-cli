@@ -1,4 +1,6 @@
 import getopt, sys,os,DataManager
+from colorama import Style,Back
+import CalendarDisplay
 
 
 unixOptions = "hv:"
@@ -13,9 +15,6 @@ def main():
     except getopt.GetoptError as err:
         print(err)
         sys.exit(2)
-
-    # print(opts)
-
     
     for o, a in opts:
         if o in ("-h", "--help"):
@@ -23,8 +22,11 @@ def main():
             sys.exit()
         elif o == "--start":
             print("Program is starting...")
+            sys.exit()
         # else:
         #     assert False, "unhandled option"
+        
+    CalendarDisplay.calendar()
 
 
 
