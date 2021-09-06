@@ -4,6 +4,7 @@ from colorama import Style,Back, Fore
 import DataManager
 
 dataTable = "event"
+DataManager.creatTable(dataTable)
 
 def addEvent(args=[]):
     event = str()
@@ -24,8 +25,11 @@ def addEvent(args=[]):
             sys.exit()
 
     try:
-        DataManager.insertData(dataTable,event,date)
-        print(f"{Fore.GREEN}{event} on {date} has added to calendar!!{Fore.RESET}")
+        if event:
+            DataManager.insertData(dataTable,event,date)
+            print(f"{Fore.GREEN}{event} on {date} has added to calendar!!{Fore.RESET}")
+        else:
+            print(Fore.YELLOW+'--add require option --event="<enter your event>"'+Fore.RESET)
     except Exception as e:
         print(f"Erroe -> {e}")
     

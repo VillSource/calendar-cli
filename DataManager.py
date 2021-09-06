@@ -27,13 +27,16 @@ def executeSQL(command=""):
 
 
 def creatTable(table):
-    executeSQL(f'''
-        create table {table}(
-            event text,
-            date text,
-            jdat integer
-        );
-    ''')
+    try:
+        with sqlite3.connect(getPath(database)) as con:
+            data = con.execute(f'''
+                create table {table}(
+                    event text,
+                    date text,
+                    jdat integer
+                );''')
+    except Exception as e:
+        pass
 
 
 def insertData(table,event,date):
@@ -50,7 +53,7 @@ def selectTable(table):
 
 def printDatabase(table):
     for i in selectTable(table):
-        print(f"{i[0]}  -->  {i[1]}  -->  {i[2]}  -->  {jd_to_date(i[2])}")
+        print(f"{i[1]}  -->  {i[2]}  -->  {jd_to_date(i[2])}   -->  {i[0]}")
 
 
 def jd_to_date(jd):
@@ -108,7 +111,7 @@ def setUserName(name):
 
 
 
-creatTable("event")
+# creatTable("event")
 # insertData("event","start")
 
 # for row in selectTable("Anirut"):

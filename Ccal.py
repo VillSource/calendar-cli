@@ -49,7 +49,6 @@ def main():
 
     while not not opts:
         o,a = opts.pop(0)
-        # print(o,a)
         if o in ("-h", "--help"):
             Document.read_help_file()
             sys.exit()
@@ -65,7 +64,7 @@ def main():
         elif o in ("--show","-s"):
             DataManager.printDatabase("event")
         else:
-            print("\n\n\n\n\n\n")
+            print(f"{o} is not option")
 
 
 
