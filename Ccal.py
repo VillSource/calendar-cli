@@ -1,10 +1,9 @@
 import getopt, sys,Document
-from typing import Match
 import CalendarDisplay
 import DataManager,CalendarManager
 
 
-unixOptions = "had:e:s"
+unixOptions = "had:e:sl:m"
 gunOptions =[
     "help",
     "start",
@@ -12,7 +11,9 @@ gunOptions =[
     "add",
     "date=",
     "event=",
-    "show"
+    "show",
+    "list",
+    "modify"
 ]
 
 def main():
@@ -25,27 +26,6 @@ def main():
     if len(opts)<1:
         CalendarDisplay.calendar()
         sys.exit()
-
-    
-    # for o, a in opts:
-    #     # print(o)
-    #     if o in ("-h", "--help"):
-    #         Document.read_help_file()
-    #         sys.exit()
-    #     elif o in ("--start","-s"):
-    #         print("Program is starting...")
-    #         sys.exit()
-    #     elif o in ("--user.name"):
-    #         DataManager.setUserName(a)
-    #         sys.exit()
-    #     elif o in ("--date","-d"):
-    #         print(running.date)
-    #         running.date = a
-    #         print(running.date)
-    #     elif o in ("--event","-e"):
-    #         print(running.event)
-    #         running.event = a
-    #         print(running.event)
 
     while not not opts:
         o,a = opts.pop(0)
@@ -63,6 +43,10 @@ def main():
             sys.exit()
         elif o in ("--show","-s"):
             DataManager.printDatabase("event")
+            sys.exit()
+        elif o in ("--list", "-l"):
+            CalendarDisplay.printEvent(opts,a)
+            sys.exit()
         else:
             print(f"{o} is not option")
 

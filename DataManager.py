@@ -4,6 +4,7 @@
 """
 
 import sqlite3,sys,os,datetime
+import calendar
 
 database = "data/schedule.db"
 
@@ -31,9 +32,10 @@ def creatTable(table):
         with sqlite3.connect(getPath(database)) as con:
             data = con.execute(f'''
                 create table {table}(
-                    event text,
-                    date text,
-                    jdat integer
+                    ID INTEGER PRIMARY KEY AUTOINCREMENT,
+                    event TEXT,
+                    date TEXT,
+                    jday INTEGER
                 );''')
     except Exception as e:
         pass
@@ -41,19 +43,34 @@ def creatTable(table):
 
 def insertData(table,event,date):
     command =f"""
-        insert into {table} values ("{event}",date("{date}"),julianday("{date}"))
+        insert into {table} (event,date,jday) values ("{event}",date("{date}"),julianday("{date}"))
     """
     executeSQL(command)
-    # print(command + "\n"+date)
+
+
 
 def selectTable(table):
     return executeSQL(f"""
         select * from {table}
     """)
 
+def selectTableOrderByDate(table,direction="DESC",limit=0):
+    if limit>0 :limit = f"limit {limit}" 
+    else : limit=""
+    command =f"""SELECT * FROM {table} ORDER BY jday {direction} {limit}"""
+    return executeSQL(command)
+
+def selectTableOnMounth(table,curDate=datetime.datetime.now().date()):
+    end = datetime.datetime(
+        curDate.year,
+        curDate.month,
+        calendar.monthrange(curDate.year,curDate.month)[1])
+    command = f"SELECT * FROM {table} WHERE jday >= julianday('{curDate}') AND jday <= julianday('{end}')  ORDER BY jday"
+    return executeSQL(command)
+
 def printDatabase(table):
     for i in selectTable(table):
-        print(f"{i[1]}  -->  {i[2]}  -->  {jd_to_date(i[2])}   -->  {i[0]}")
+        print(f"{i[0]} : {i[2]}  -->  {i[3]}  -->  {jd_to_date(i[3])}   -->  {i[1]}")
 
 
 def jd_to_date(jd):
@@ -100,6 +117,10 @@ def getUserName():
     try:
         with open(getPath("data/.user.name"),'r') as f:
             return f.read()
+    except FileNotFoundError as ef:
+        name = input("Enter your name : ")
+        setUserName(name)
+        return name
     except Exception as e:
         print(f"Error ->{e}")
 def setUserName(name):
