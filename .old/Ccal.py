@@ -3,7 +3,7 @@ import CalendarDisplay
 import DataManager,CalendarManager
 
 
-unixOptions = "had:e:sl:m"
+unixOptions = "had:e:l:m"
 gunOptions =[
     "help",
     "start",
