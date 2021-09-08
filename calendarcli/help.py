@@ -17,4 +17,4 @@ except Exception as e :
 #     import webbrowser
 #     print("Plaes read Documentation...")
 #     webbrowser.open_new_tab("https://github.com/VillSource/calendar-cli")
-print("love")
+print("not that easy!!")
