@@ -1,17 +1,19 @@
-import datetime,re,sys
+import datetime,sys
 from colorama import Style,Back, Fore
+from calendarcli.check import isDate
 
+date = datetime.datetime.today().date()
+event = str()
 
-def data(opt=[]):
-    print(opt)
-    date = datetime.datetime.today().date()
-    event = str()
-    
+def data(opt=[]): #  Receiv option *event and date than check format befor add it into database
+    global event
+    global date
+
     for o,a in opt:
         if o in ("--event","-e"):
             event = a
         elif o in ("--date","-d"):
-            if len(a)==10 and bool(re.match("[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]",a)):
+            if isDate(a):
                 date = a
             else:
                 print(Fore.YELLOW + f"Date format {a} not match")
@@ -21,10 +23,13 @@ def data(opt=[]):
             print(f"{o} is not option")
             sys.exit()
     try:
-        if event:
-            #  เพิ่ม fun ตรงนี้
+        if  event:
+            add()
             print(f"{Fore.GREEN}{event} on {date} has added to calendar!!{Fore.RESET}")
         else:
-            print(Fore.YELLOW+'--add require option --event="<enter your event>"'+Fore.RESET)
+            print(Fore.YELLOW+'--add require option --event=<enter your event>'+Fore.RESET)
     except Exception as e:
         print(f"Erroe -> {e}")
+
+def add():
+    pass
