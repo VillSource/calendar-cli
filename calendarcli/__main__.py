@@ -20,25 +20,26 @@ def main():
         print(err)
         sys.exit(2)
 
-    try: 
-        o = opts.pop(0)[0]
-    except (IndexError) as e:
-        o="calendar"
+    try : o,a = opts.pop(0)
+    except (IndexError) as e : o="calendar"
 
     if o in ("--help","-h"):
-        import calendarcli.help
+        import help
     elif o in ("--add","-a"):
-        import calendarcli.add as add
+        import add
         add.data(opts)
     elif o in ("--update","-u"):
+        import update
+        update.data(a,opts)
         print("update")
     elif o in ("--delete","-d"):
         print("delete")
     elif o in ("--list","-l"):
         print("list")
-    elif o in ("--calendar"):
-        print("calendar")
-    else:import calendarcli.help
+    elif o == "calendar":
+        import icalendar
+        icalendar.printCalendar()
+    else:import help
 
 
 if __name__ == '__main__':
