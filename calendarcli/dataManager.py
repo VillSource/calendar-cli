@@ -11,7 +11,7 @@ def getPath(filename):
 def executeSQL(command=""):
     data =None
     try:
-        with sqlite3.connect(getPath(database)) as con:
+        with sqlite3.connect(database) as con:
             data = con.execute(command)
     except Exception as e:
         print(f"Error ->{e}")
@@ -123,7 +123,7 @@ def setUserName(name):
 
 
 
-# creatTable("event")
+creatTable("event")
 # insertData("event","start")
 
 # for row in selectTable("Anirut"):

@@ -16,4 +16,3 @@ def printCalendar():
     rdayc = Back.GREEN+ Fore.BLACK + date + Style.RESET_ALL
     print(f"\n", re.sub(rday,rdayc,thisMonth))
     # print(f"Hello {DataManager.getUserName()} : {today}\n")
-print("printcalendar")

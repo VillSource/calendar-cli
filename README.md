@@ -1,8 +1,3 @@
-<!-- 
-</p>
-<h1 align="center">
-  Command line calendar
-</h1> -->
 
 # installation step
 

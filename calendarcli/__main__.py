@@ -1,7 +1,7 @@
 import sys
 import getopt
 
-unixOptions = "hau:d:l:me:"
+unixOptions = "hau:d:l:me:n:"
 gunOptions =[
     "help",
     "add",
@@ -25,20 +25,27 @@ def main():
 
     if o in ("--help","-h"):
         import help
+
     elif o in ("--add","-a"):
         import add
         add.data(opts)
+
     elif o in ("--update","-u"):
         import update
         update.data(a,opts)
         print("update")
+
     elif o in ("--delete","-d"):
         print("delete")
+
     elif o in ("--list","-l"):
-        print("list")
+        import list
+        list.data(a,opts)
+
     elif o == "calendar":
         import icalendar
         icalendar.printCalendar()
+
     else:import help
 
 

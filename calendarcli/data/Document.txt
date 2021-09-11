@@ -31,7 +31,7 @@ ccal          : To show the calendar on this mounth.
               [-n <How many month>]           : To print many month
 [-ls]         : To show all event on this month
 [-lm]         : To secect one of list and modify data or delete
-[-l<1-9>]     : To show all event in <0-9> month
+[-l<1-12>]     : To show all event in <0-9> month
 
 [--user.name=<name>] : To add your name to program environment.
 

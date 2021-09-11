@@ -15,7 +15,7 @@ def data(a,opt):
     try:
         id = int(a)
     except Exception as e:
-        oldEvent = a
+        oldEvent = a 
 
     for i,j in opt:
         if i in ("--date",'-d'):
