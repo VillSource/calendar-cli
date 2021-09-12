@@ -1,5 +1,7 @@
 import sys
 from colorama import Style,Back, Fore
+from calendarcli.dataManager import selectTableOnMounth
+from datetime import datetime
 
 # print("list")
 
@@ -31,11 +33,51 @@ def data(a,o):
                 else : print(Fore.YELLOW + f"{i} {j} is not option" + Fore.RESET)
 
 
+d = datetime.today()
+
 def printXmonth(x):
-    print(f"print {x} month")
+    fd = d
+    for j in range(x):
+        data = selectTableOnMounth(curDate=fd.date())
+        for index,i in enumerate(data):
+            if index == 0 :
+                print("\n",f"{fd.strftime('%Y %B')}" )
+            print(f"  ├─{i[2]} : {i[1]} (id:{i[0]})")
+        try    : fd = datetime(int(fd.year), int(fd.month)+1, 1)
+        except : fd = datetime(int(fd.year)+1, 1,1)
+    print()
 
 def printStd():
-    print("printSTD")
+    print("\n",d)
+    data = selectTableOnMounth()
+    for i in data:
+        print(f"  ├─{i[2]} : {i[1]} (id:{i[0]})")
+    print()
+
 
 def editMode():
-    print("printEdit")
+    from pprint import pprint
+    import inquirer
+
+    l = list()
+    r = list()
+    for i in selectTableOnMounth():
+        l.append(f"{i[2]} : {i[1]}")
+        r.append(i)
+    # print(l)
+
+    questions = [
+        inquirer.List('edit',
+                        message="What event do you want to modify?",
+                        choices=l,
+                        carousel=True
+                    ),
+        
+        inquirer.List('mode',
+                        message="What do you want to do?",
+                        choices=['Delete','Update'],
+                        carousel=True
+                    ),
+    ]
+    answers = inquirer.prompt(questions)
+    # pprint(answers)

@@ -6,7 +6,7 @@ def readme():
 
 setup(
     name = 'calendar-cli-kku',
-    version = '0.0.a',
+    version = '0.0.1',
     packages = ['calendarcli'],
     description='test file',
     long_description=readme(),
@@ -16,8 +16,8 @@ setup(
     package_data={'data': ['calendarcli/data/*']},
     include_package_data=True,
     install_requires=[
-        'colorama',
-        'calendar'
+        'colorama', 
+        'inquirer'     
     ],
     entry_points = {
         'console_scripts': [
