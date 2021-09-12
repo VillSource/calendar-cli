@@ -1,6 +1,12 @@
 # database
 calendarcli/data/schedule.db
 
+# old file
+.old/
+
+# bath file
+*.bat
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

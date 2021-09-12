@@ -79,5 +79,6 @@ def editMode():
                         carousel=True
                     ),
     ]
+    print(f"{d.strftime('%Y %B')}")
     answers = inquirer.prompt(questions)
     # pprint(answers)
