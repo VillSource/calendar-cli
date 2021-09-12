@@ -6,7 +6,7 @@ def readme():
 
 setup(
     name = 'calendar-cli-kku',
-    version = '0.0.1',
+    version = '0.0.a1',
     packages = ['calendarcli'],
     description='test file',
     long_description=readme(),

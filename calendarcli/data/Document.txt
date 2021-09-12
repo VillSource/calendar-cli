@@ -25,8 +25,9 @@ ccal          : To show the calendar on this mounth.
                     [--event=<event>, -e <event>]             : New event
 
 [--delete=<event>, -d<event>]  : To delete event named <event>
+[--delete=<ID>, -d<ID>]        : To delete event by id
 
-[--list]      : To show all event on this month
+[--list]      : To show all events on this month
               [--modify, -m]                  : To secect one of list and modify data or delete
               [-n <How many month>]           : To print many month
 [-ls]         : To show all event on this month
