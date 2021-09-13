@@ -36,7 +36,7 @@ calendar-cli
 ccal
 ```
 
-![Run script](/src/run.gif)
+![Run script](/document/run.gif)
 
 ## Add data
 
@@ -59,7 +59,7 @@ ccal -a -e "Happy birthday" -d 2022-01-19
 
 Or you can mix shot option and full option together.
 
-![Add data](/src/add.gif)
+![Add data](/document/add.gif)
 
 ## List
 
