@@ -38,7 +38,6 @@ def main():
     elif o in ("--update", "-u"):
         import calendarcli.update as update
         update.data(a, opts)
-        print("update")
 
     elif o in ("--delete", "-d"):
         from calendarcli.delete import find

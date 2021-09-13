@@ -46,6 +46,22 @@ def insertData(event, date, table=tables):
     """
     executeSQL(command)
 
+def update(ref,date='',event='',table=tables):
+    try:ref = f"id = '{int(ref)}'"
+    except: ref = f"event = '{ref}'"
+    if ref:
+        dataSet = ""
+        if date: dataSet += f"date = '{date}',jday = julianday('{date}'),"
+        if event: dataSet += f"event = '{event}',"
+
+        cmmand =f"""
+            UPDATE {table}
+            SET {dataSet[:-1]}
+            WHERE {ref};
+        """
+        executeSQL(cmmand)
+        return True
+    return False
 
 
 ## select data
