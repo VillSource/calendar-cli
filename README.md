@@ -36,7 +36,26 @@ calendar-cli
 ccal
 ```
 
-![Run script](/document/run.gif)
+![Run script](https://github.com/VillSource/calendar-cli/blob/master/document/run.gif?raw=true)
+
+**All options in CLI**
+
+- --add, -a
+  - --event, -e
+  - --date, -d
+- --update, -u
+  - --event, -e
+  - --date, -d
+  - --confirm
+- --delete, -d
+  - --confirm
+- --list
+  - --modify, -m
+  - -n
+- -ls
+- -lm
+  - --confirm
+- -l
 
 ## Add data
 
@@ -59,7 +78,43 @@ ccal -a -e "Happy birthday" -d 2022-01-19
 
 Or you can mix shot option and full option together.
 
-![Add data](/document/add.gif)
+![Add data](https://github.com/VillSource/calendar-cli/blob/master/document/add.gif?raw=true)
+
+## Update
+
+```bash
+ccal --update <oldEvent : name or ID> --date <newDate> -e <newEventName>
+```
+
+Update event Birthday Party (ID=`432`)
+
+```bash
+# Update Birthday Party date by name event
+ccal --update "Birthday Party" -d 2021-01-19
+
+# Update Birthday Party by ID event
+ccal -u 432 -e "My mom birthday Party" -d 2021-05-09
+```
+
+use `--confirm` at the end for ignore all interaction.
+
+## Delete
+
+```bash
+ccal --delete <name or ID>
+```
+
+Data in database ==> event Birthday Party (ID=`432`)
+
+```bash
+# Delete Birthday Party event by name event
+ccal --delete "Birthday Party"
+
+# Delete Birthday Party by ID event
+ccal --delete 432
+```
+
+use `--confirm` at the end for ignore all interaction.
 
 ## List
 
