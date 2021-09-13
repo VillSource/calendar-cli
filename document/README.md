@@ -65,7 +65,80 @@ calendarcli.check.isDate( date:str )
 |:---:|:---|
 |Boolean|boolean : if `date` format match `YYYY-MM-DD` return `True`|
 
-<!-- ## dataManager -->
+## dataManager
+
+### selectTableOnMounth
+
+To get all event in month.
+
+```python
+calendarcli.dataManager.selectTableOnMounth(curDate : string):
+```
+
+|Paramiter|Property|
+|:---:|:---|
+|curDate|string : Date formath `YYYY-MM-MM`|
+
+|Return|Property|
+|:---:|:---|
+|list|list : List of event in muonth of `curDate`|
+
+For example I want to get all event in 2021-09-01 (in year 2021 month 9)
+
+```python
+from calendarcli.dataManager import selectTableOnMounth
+event = selectTableOnMounth("2021-09-01")
+```
+
+### selectTableOrderByDate
+
+To get all event in database.
+
+```python
+calendarcli.dataManager.selectTableOrderByDate(limit : intager):
+```
+
+|Paramiter|Property|
+|:---:|:---|
+|limit|intager : Limited amount required number|
+
+|Return|Property|
+|:---:|:---|
+|list|list : List of event in database|
+
+For example I want to get all event database
+
+```python
+from calendarcli.dataManager import selectTableOrderByDate
+event = selectTableOrderByDate()                # All event in database
+evenFirst10list = selectTableOrderByDate(10)    # First 10 list in database order by date
+```
+
+### searchID and searchEvent
+
+To get event detail.
+
+```python
+calendarcli.dataManager.searchID(id : intager): list
+calendarcli.dataManager.searchEvent(event : string): list
+```
+
+|Paramiter|Property|
+|:---:|:---|
+|id|intager : Event id to serch.|
+|event|string : Event name to search.|
+
+|Return|Property|
+|:---:|:---|
+|list|list : List of event whish match wit id=`id` or event_name=`event`|
+
+For example I want to search where "Birthday Party" is?, where id is 432?
+
+```python
+from calendarcli.dataManager import searchID,searchEvent
+event  = searchID(432)                     # Search where "Birthday Party" is?
+event2 = searchEvent("Birthday Party")     # Search where id is 432?
+```
 
 ## delete
 
