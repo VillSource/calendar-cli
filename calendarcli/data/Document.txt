@@ -37,5 +37,7 @@ ccal          : To show the calendar on this mounth.
 [-lm]         : To secect one of list and modify data or delete
 [-l<1-12>]     : To show all event in <0-9> month
 
+--confirm     : To confirm commit and turn of "Enter to continue" function.
+
 [--user.name=<name>] : To add your name to program environment.
 
