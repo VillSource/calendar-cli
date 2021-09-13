@@ -36,7 +36,7 @@ calendar-cli
 ccal
 ```
 
-![Run script](https://github.com/VillSource/calendar-cli/tree/master/document/run.gif)
+![Run script](https://github.com/VillSource/calendar-cli/blob/master/document/run.gif?raw=true)
 
 ## Add data
 
@@ -59,7 +59,7 @@ ccal -a -e "Happy birthday" -d 2022-01-19
 
 Or you can mix shot option and full option together.
 
-![Add data](https://github.com/VillSource/calendar-cli/tree/master/document/add.gif)
+![Add data](https://github.com/VillSource/calendar-cli/blob/master/document/add.gif?raw=true)
 
 ## List
 
