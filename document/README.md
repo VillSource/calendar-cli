@@ -89,7 +89,7 @@ confirmation = [ ("--confirm", "") ]
 # To delete by event name
 delet("Birthday Party",confirmation)
 
-# To delete by event name
+# To delete by ID
 delet(432,confirmation)
 ```
 
@@ -101,4 +101,33 @@ delet(432,confirmation)
 
 <!-- ## path -->
 
-<!-- ## update -->
+## update
+
+```python
+calendarcli.update.data( event:any, opt : list ) : None
+```
+
+`add` function required one paramiter that contain date and event name. (None return)
+
+```python
+[
+    ( Data_option1, Property1 ),
+    ( Data_option2, Property2 ),
+]
+```
+
+|Data option |Property|
+|:---:|:---|
+|--event, -e|string : event name|
+|--date, -d|string : date|
+
+For example I want to add Birthday Party 2022-01-19 on database.
+
+```python
+from calendarcli import add
+opt = [
+    ('--event','Birthday Party'),
+    ('-d','2021-01-19')
+]
+add.data(opt)
+```
