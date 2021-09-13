@@ -76,7 +76,7 @@ def selectTableOrderByDate(direction="DESC", limit=0, table=tables):
     else:
         limit = ""
     command = f"""SELECT * FROM {table} ORDER BY jday {direction} {limit}"""
-    return executeSQL(command)
+    return list(executeSQL(command))
 
 def selectTableOnMounth(curDate=datetime.datetime.now().date(), table=tables):
     end = datetime.datetime(
@@ -84,7 +84,7 @@ def selectTableOnMounth(curDate=datetime.datetime.now().date(), table=tables):
         curDate.month,
         calendar.monthrange(curDate.year, curDate.month)[1])
     command = f"SELECT * FROM {table} WHERE jday >= julianday('{curDate}') AND jday <= julianday('{end}')  ORDER BY jday"
-    return executeSQL(command)
+    return list(executeSQL(command))
 
 def searchID(ID="",table=tables):
     command = f"SELECT * FROM {table} WHERE ID LIKE '{ID}' ORDER BY jday"
