@@ -15,25 +15,42 @@ def data(a,o):
             if not (a in ("smsm")):
                 print(Fore.YELLOW + f"-l{a} is not options!!" + Fore.RESET)
                 sys.exit()
+
             else:
                 if "m" in a : editMode()
                 else : printStd()
 
     else:
-        print("--list",o)
+        # print("--list",o)
         if(('-m', '') in o or ('--modify', '')in o ):
             editMode()
+            sys.exit()
+
         else:
             for i,j in o:
                 if i == "-n":
                     try : printXmonth(int(j))
                     except Exception as e:
                         print(Fore.YELLOW + f"{j} is not a number. Please enter only number." + Fore.RESET)
-                        sys.exit()
+
+                elif i in ("--search","-s") :
+                    search(j)
+
                 else : print(Fore.YELLOW + f"{i} {j} is not option" + Fore.RESET)
+                sys.exit()
+                
+            printStd()
 
 
 d = datetime.today()
+
+def search(event):
+    from calendarcli.dataManager import searchEvent
+    data = searchEvent(f"%{event}%")
+    print("Search",event,"found",len(data))
+    for i in data:
+        print(f"  ├─{i}")
+    print()
 
 def printXmonth(x):
     fd = d
@@ -46,6 +63,7 @@ def printXmonth(x):
         try    : fd = datetime(int(fd.year), int(fd.month)+1, 1)
         except : fd = datetime(int(fd.year)+1, 1,1)
     print()
+
 
 def printStd():
     print("\n",d)

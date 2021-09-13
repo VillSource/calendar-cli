@@ -8,7 +8,6 @@ event = str()
 
 
 def data(opt=[]):  # Receiv option *event and date than check format befor add it into database
-    print(opt)
     global event
     global date
 

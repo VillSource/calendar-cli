@@ -1,7 +1,7 @@
 import sys
 import getopt
 
-unixOptions = "hau:d:l:me:n:"
+unixOptions = "hau:d:l:me:n:s:"
 gunOptions = [
     "help",
     "add",
@@ -10,7 +10,9 @@ gunOptions = [
     "update=",
     "delete=",
     "list",
-    "modify"
+    "modify",
+    "search=",
+    "confirm"
 ]
 
 
@@ -39,7 +41,8 @@ def main():
         print("update")
 
     elif o in ("--delete", "-d"):
-        print("delete")
+        from calendarcli.delete import find
+        find(a,opts)
 
     elif o in ("--list", "-l"):
         import calendarcli.list as list

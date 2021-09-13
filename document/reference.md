@@ -24,8 +24,8 @@ ___opt___ is the list that contained the options
 
 |option||
 |:---:|:---|
-|--event, -e|event name|
-|--date, -d|date|
+|--event, -e|string : event name|
+|--date, -d|string : date|
 
 For example I want to add Birthday Party 2022-01-19 on the list
 
