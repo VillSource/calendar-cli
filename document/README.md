@@ -72,7 +72,7 @@ calendarcli.check.isDate( date:str )
 To delete event from database. (None return)
 
 ```python
-calendarcli.delete.find( event , option ) : None
+calendarcli.delete.find( event : any , option : list ) : None
 ```
 
 |Paramiter|Property|
@@ -87,10 +87,10 @@ from calendarcli import delet
 confirmation = [ ("--confirm", "") ]
 
 # To delete by event name
-delet("Birthday Party",confirmation)
+delet.find("Birthday Party",confirmation)
 
 # To delete by ID
-delet(432,confirmation)
+delet.find(432,confirmation)
 ```
 
 <!-- ## help -->
@@ -103,11 +103,18 @@ delet(432,confirmation)
 
 ## update
 
+`update` function will update `event` with new data in `opt` (None return)
+
 ```python
-calendarcli.update.data( event:any, opt : list ) : None
+calendarcli.update.data( event : any, opt : list ) : None
 ```
 
-`add` function required one paramiter that contain date and event name. (None return)
+|Paramiter|Property|
+|:---:|:---|
+|event|string :  Event name<br/>integer : Event ID|
+|opt|list : list of new data to update.|
+
+Structur of `opt`
 
 ```python
 [
@@ -121,13 +128,14 @@ calendarcli.update.data( event:any, opt : list ) : None
 |--event, -e|string : event name|
 |--date, -d|string : date|
 
-For example I want to add Birthday Party 2022-01-19 on database.
+For example I want to update Birthday Party 2022-01-19 on database.
 
 ```python
-from calendarcli import add
+from calendarcli import update
 opt = [
-    ('--event','Birthday Party'),
-    ('-d','2021-01-19')
+    ('-d','2050-01-19'),
+    ('--confirm', '')           # To confirm updating.
 ]
-add.data(opt)
+add.data("Birthday Party",opt)  # Update by old event name
+add.data(432,opt)               # Update by ID event
 ```
