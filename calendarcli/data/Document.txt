@@ -23,6 +23,9 @@ ccal          : To show the calendar on this mounth.
 [--update=<event>]  : To update event with new data
                     [--date=<xxxx-xx-xx>, -d <xxxx-xx-xx>]    : New date
                     [--event=<event>, -e <event>]             : New event
+[--update=<ID>]  : To update event with new data
+                    [--date=<xxxx-xx-xx>, -d <xxxx-xx-xx>]    : New date
+                    [--event=<event>, -e <event>]             : New event
 
 [--delete=<event>, -d<event>]  : To delete event named <event>
 [--delete=<ID>, -d<ID>]        : To delete event by id

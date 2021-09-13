@@ -2,13 +2,12 @@ import sqlite3, sys, os, datetime
 import calendar
 
 database = "data/schedule.db"
-tables = "event"
+tables = "events"
 
-
+## Database
 def getPath(filename):
     bundle_dir = getattr(sys, '_MEIPASS', os.path.abspath(os.path.dirname(__file__)))
     return os.path.abspath(os.path.join(bundle_dir, filename))
-
 
 def executeSQL(command=""):
     data = None
@@ -19,6 +18,11 @@ def executeSQL(command=""):
         print(f"Error ->{e}")
     return data
 
+def getConection():
+    conn = None
+    try : conn = sqlite3.connect(getPath(database))
+    except Exception as e:print(e)        
+    return conn
 
 def creatTable(table=tables):
     try:
@@ -34,18 +38,37 @@ def creatTable(table=tables):
         pass
 
 
+
+## Add and update
 def insertData(event, date, table=tables):
     command = f"""
         insert into {table} (event,date,jday) values ("{event}",date("{date}"),julianday("{date}"))
     """
     executeSQL(command)
 
+def update(ref,date='',event='',table=tables):
+    try:ref = f"id = '{int(ref)}'"
+    except: ref = f"event = '{ref}'"
+    if ref:
+        dataSet = ""
+        if date: dataSet += f"date = '{date}',jday = julianday('{date}'),"
+        if event: dataSet += f"event = '{event}',"
 
+        cmmand =f"""
+            UPDATE {table}
+            SET {dataSet[:-1]}
+            WHERE {ref};
+        """
+        executeSQL(cmmand)
+        return True
+    return False
+
+
+## select data
 def selectTable(table=tables):
     return executeSQL(f"""
         select * from {table}
     """)
-
 
 def selectTableOrderByDate(direction="DESC", limit=0, table=tables):
     if limit > 0:
@@ -55,7 +78,6 @@ def selectTableOrderByDate(direction="DESC", limit=0, table=tables):
     command = f"""SELECT * FROM {table} ORDER BY jday {direction} {limit}"""
     return executeSQL(command)
 
-
 def selectTableOnMounth(curDate=datetime.datetime.now().date(), table=tables):
     end = datetime.datetime(
         curDate.year,
@@ -64,11 +86,34 @@ def selectTableOnMounth(curDate=datetime.datetime.now().date(), table=tables):
     command = f"SELECT * FROM {table} WHERE jday >= julianday('{curDate}') AND jday <= julianday('{end}')  ORDER BY jday"
     return executeSQL(command)
 
+def searchID(ID="",table=tables):
+    command = f"SELECT * FROM {table} WHERE ID LIKE '{ID}' ORDER BY jday"
+    return list(executeSQL(command))
+    
+def searchEvent(event="",table=tables):
+    command = f"SELECT * FROM {table} WHERE event LIKE '{event}' ORDER BY jday"
+    return list(executeSQL(command))
+        
 
+
+
+## delete data
+def deleteByID(id,table = tables):
+    command = f'DELETE FROM {table} WHERE id="{id}"'
+    executeSQL(command)
+
+def deleteByEvent(event,table = tables):
+    command = f'DELETE FROM {table} WHERE event="{event}"'
+    executeSQL(command)
+
+
+
+
+
+## ETC.
 def printDatabase(table=tables):
     for i in selectTable(table):
         print(f"{i[0]} : {i[2]}  -->  {i[3]}  -->  {jd_to_date(i[3])}   -->  {i[1]}")
-
 
 def jd_to_date(jd):
     import math
@@ -106,7 +151,6 @@ def jd_to_date(jd):
         year = D - 4715
     return dt.datetime(int(year), int(month), int(day)).date()
 
-
 def getUserName():
     try:
         with open(getPath("data/.user.name"), 'r') as f:
@@ -118,7 +162,6 @@ def getUserName():
     except Exception as e:
         print(f"Error ->{e}")
 
-
 def setUserName(name):
     try:
         with open(getPath("data/.user.name"), 'w') as f:
@@ -127,8 +170,5 @@ def setUserName(name):
         print(f"Error ->{e}")
 
 
-creatTable()
-# insertData("event","start")
 
-# for row in selectTable("Anirut"):
-#     print(row)
+creatTable()
