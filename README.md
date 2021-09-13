@@ -38,6 +38,22 @@ ccal
 
 ![Run script](https://github.com/VillSource/calendar-cli/blob/master/document/run.gif?raw=true)
 
+**All options in CLI**
+
+- --add, -a
+  - --event, -e
+  - --date, -d
+- --update, -u
+  - --event, -e
+  - --date, -d
+- --delete, -d
+- --list
+  - --modify,m
+  - n
+- -ls
+- -lm
+- -l
+
 ## Add data
 
 ```--add, -a``` : to add event to your calendar that require event name 
