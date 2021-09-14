@@ -33,6 +33,7 @@ body {
 }
 .calendar-header {
     text-align: center;
+    cursor: pointer;
     padding: 20px 0;
     background: linear-gradient(to bottom, #fafbfd 0%, rgba(255, 255, 255, 0) 100%);
     border-bottom: 1px solid rgba(166, 168, 179, 0.12);
@@ -68,6 +69,33 @@ body {
     /* pointer-events: none; */
     z-index: 1;
 }
+
+.day-name:nth-of-type(n){
+    grid-row: 1;
+}
+.day-name:nth-of-type(1){
+    grid-column: 1;
+}
+.day-name:nth-of-type(2){
+    grid-column: 2;
+}
+.day-name:nth-of-type(3){
+    grid-column: 3;
+}
+.day-name:nth-of-type(4){
+    grid-column: 4;
+}
+.day-name:nth-of-type(5){
+    grid-column: 5;
+}
+.day-name:nth-of-type(6){
+    grid-column: 6;
+}
+.day-name:nth-of-type(7){
+    grid-column: 7;
+}
+
+
 /* sun day */
 .day:nth-of-type(7n + 7) {
     border-right: 0;
@@ -76,6 +104,7 @@ body {
 /* row one */
 .day:nth-of-type(n + 1):nth-of-type(-n + 7) {
     grid-row: 2;
+    /* background-color: turquoise; */
 }
 /* row two */
 .day:nth-of-type(n + 8):nth-of-type(-n + 14) {
@@ -96,6 +125,12 @@ body {
 .day:nth-of-type(n + 29):nth-of-type(-n + 35) {
     grid-row: 6;
 }
+/* row six */
+.day:nth-of-type(n + 36):nth-of-type(-n + 42) {
+    grid-row: 7;
+}
+
+
 /* cal one */
 .day:nth-of-type(7n + 1) {
     grid-column: 1;
@@ -223,3 +258,89 @@ body {
     font-weight: 500;
     color: rgba(81, 86, 93, .7);
 }
+
+
+
+
+
+
+
+
+
+
+
+#option{
+    display: none;
+    width: 100%;
+    grid-template-columns: repeat(2);
+    border-top-width: 3px;
+    padding: 8px 12px;
+    margin: 10px;
+    border-top-style: solid;
+    font-size: 14px;
+    position: relative;
+    border-top-color: #000000;
+    grid-column: 3 / span 3;
+    grid-row: 1;
+    background: #f1f1f1;
+    color: #00000000;
+    z-index: 3;
+    border-radius: 10px;
+    box-shadow: 0px 2px 20px rgba(0, 0, 0, 0.3);
+    
+}
+
+#selectMonth{
+    display: unset;
+}
+
+#selectYear{
+    display: un;
+}
+#smonth,#syear{
+    background-color: #f1f1f1;
+    cursor: pointer;
+}
+#smonthActive,#syearActive{
+    background-color: rgb(66, 66, 66);
+    color: rgb(64, 189, 176);
+    box-shadow: 0 2px 10px rgba(64, 189, 176,.5);
+    cursor: not-allowed;
+    
+}
+#smonth:hover,#syear:hover {
+    background-color: rgb(66, 66, 66);
+    color: rgb(64, 189, 176);
+}
+
+
+
+.dropdown-content {
+    /* grid-template-rows: 50px; */
+    /* grid-auto-rows: 120px; */
+    position: relative;
+    background-color: #f1f1f1;
+    min-width: 160px;
+    z-index: 1;
+    top: 0%;
+  }
+  .dropdown-content:nth-of-type(1){
+    grid-column: 1;
+}.dropdown-content:nth-of-type(2){
+    grid-column: 2;
+}
+
+  .dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    text-align: center;
+  }
+  .dropdown-content h1 {
+    color: black;
+    padding: 12px 16px;
+    text-align: center;
+    text-decoration: none;
+    display: block;
+  }

@@ -1,1 +1,3 @@
 include calendarcli/data/*
+include calendarcgui/web/*
+include calendarcgui/web/*.js
