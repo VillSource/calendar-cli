@@ -12,8 +12,14 @@ setup(
     long_description=readme(),
     long_description_content_type='text/markdown',
     url = "https://github.com/VillSource/calendar-cli",
-    package_dir={'data': 'calendarcli/data'},
-    package_data={'data': ['calendarcli/data/*']},
+    package_dir={
+        'data': 'calendarcli/data',
+        'web' : "calendargui/web"
+        },
+    package_data={
+        'data': ['calendarcli/data/*'],        
+        'web' : ["calendargui/web/*"]
+    },
     include_package_data=True,
     install_requires=[
         'colorama', 
@@ -24,6 +30,7 @@ setup(
         'console_scripts': [
             'calendar = calendarcli.__main__:main',
             'calendar-cli = calendarcli.__main__:main',
-            'ccal = calendarcli.__main__:main'
+            'ccal = calendarcli.__main__:main',
+            'gcal = calendargui.app:start'
         ]
     })

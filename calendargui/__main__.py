@@ -1,8 +1,9 @@
 import datetime
-from calendar import monthrange
+from calendargui.app import start
 
 def main():
     print("GUI main")
+    start()
 
 
 

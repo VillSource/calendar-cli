@@ -12,6 +12,7 @@ window.onload = (event) =>{
     date = getDateString(dateType)
     console.log(dateType);
     // clearDaylist()
+    setDayList(date)
 }
 
 
@@ -19,21 +20,42 @@ window.onload = (event) =>{
 
 function clearDaylist(){
     document.querySelectorAll(".day").forEach(i=>i.remove())
+    document.querySelectorAll(".task").forEach(i=>i.remove())
 }
 async function setDayList(s) {
     clearDaylist()
     let n = await eel.getDayList(s)();
     const container = document.getElementById("dividing_day-event")
-    n.forEach(element =>{
+    c=document.getElementById("calendar")
+    n[0].forEach(element =>{
         const newDay = document.createElement("div")
         newDay.classList = `${element[1]}`
         newDay.innerText=`${element[0]}`
         newDay.id=element[2]
-        console.log(element[0]);
-        document.getElementById("calendar").insertBefore(newDay,container)
+        newDay.setAttribute("onclick","addEvent(this)")
+        // console.log(element[3]);
+        c.insertBefore(newDay,container)
     });
     document.getElementById("year").textContent = dateType.getFullYear()
     document.getElementById("month").textContent = monthNames[dateType.getMonth()]
+    n[1].forEach(element=>{
+        dateEvent = new Date(element[2]);
+        const newEvent = document.createElement('section')
+        newEvent.innerText=`${element[1]}`
+        newEvent.className = "task task--primary"
+        newEvent.style.gridColumn = dateEvent.getDay()
+        newEvent.style.gridRow = getWeekOfMonth(dateEvent)
+        insertAfter(container,newEvent)
+    })
+}
+
+function insertAfter(referenceNode, newNode) {
+    referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
+}
+function getWeekOfMonth(date) {
+    let adjustedDate = date.getDate()+date.getDay();
+    let prefixes = ['0', '1', '2', '3', '4', '5'];
+    return (parseInt(prefixes[0 | adjustedDate / 7])+1);
 }
 
 
@@ -72,6 +94,7 @@ function selectedM(a){
     document.getElementById("smonthActive").id="smonth"
     a.id = "smonthActive"
     setDayList(date)
+    x()
 }
 function selectedY(a){
     dateType.setFullYear(parseInt(a.innerText))    
@@ -81,4 +104,9 @@ function selectedY(a){
     document.getElementById("syearActive").id="syear"
     a.id = "syearActive"
     setDayList(date)
+    x()
+}
+
+function addEvent(a){
+    console.log(!!a.id);
 }

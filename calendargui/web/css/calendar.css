@@ -69,6 +69,10 @@ body {
     /* pointer-events: none; */
     z-index: 1;
 }
+.today {
+    color: #fff;
+    background-color: #99a1a7;
+}
 
 .day-name:nth-of-type(n){
     grid-row: 1;
@@ -175,6 +179,7 @@ body {
     border-left-style: solid;
     font-size: 14px;
     position: relative;
+    z-index: 3;
 }
 .task--warning {
     border-left-color: #fdb44d;
