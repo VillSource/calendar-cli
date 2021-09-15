@@ -10,17 +10,7 @@
     <link rel="stylesheet" href="./css/currday.css">
 </head>
 <body>
-    <div id="overlay" onclick="x()" style="
-        display: none;
-        background-color: rgba(0, 0, 0, 0.3);
-        top: 0%;
-        left: 0%;
-        right: 0%;
-        bottom: 0%;
-        width: 100hv;
-        position: fixed;
-        z-index: 3;
-        "></div>
+    <div id="overlay" onclick="x()"></div>
     
     <div class="calendar-container">
         <div class="calendar-header" onclick="menu()">
@@ -76,6 +66,14 @@
 
             <div id="dividing_day-event" style="display: none;"></div>
 
+            <section class="task task--primary" id="adkfs">
+                Product Checkup 1
+                <div class="task__detail">
+                    <h2>Product Checkup 1</h2>
+                    <p>15-17th November</p>
+                </div>
+            </section>
+
             <!-- <section class="task task--warning">Projects</section>
             <section class="task task--danger">Design Sprint</section>
             <section class="task task--primary">
@@ -86,7 +84,7 @@
                 </div>
             </section>
             <section class="task task--info">Product Checkup 2</section> -->
-            <section id="option">
+            <section id="option" class="nonshow">
                 <div id="selectMonth" class="dropdown-content">
                     <h1>Month</h1>
                     <a onclick="selectedM(this)" id="smonthActive" href="#">January</a>
@@ -117,6 +115,23 @@
                     <a onclick="selectedY(this)" id="syear" href="#">2029</a>
                     <a onclick="selectedY(this)" id="syear" href="#">2030</a>
                 </div>            
+            </section>
+            <section id="addbox" class="nonshow" >
+                <h1 id="addinto">Add into </h1>
+                <form id="form-event-add" method="post" onsubmit="return false;">
+                    <div class="form-element">
+                        <label for="Event_name" class="form-label">Event name</label>
+                        <input id="Event_name" type="text" name="event_name">
+                    </div>
+                    <div class="form-element">
+                        <label for="event_detail" class="form-label">Event Detail</label>
+                        <textarea id="event_detail" type="text" cols="40" rows="5" name="event_detail"></textarea>
+                    </div>
+                    <div class="form-element form-submit">
+                        <button onclick="submitEvent(this)" id="summit" class="btn" type="submit" name="submit">Add</button>
+                        <button onclick="x()" id="unsubmit" class="btn off" name="cancel">Cansel</button>
+                    </div>
+                </form>
             </section>
         </div>
     </div>

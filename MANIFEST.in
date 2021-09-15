@@ -1,5 +1,5 @@
 include calendarcli/data/*
-include calendargui/web/*
-include calendargui/web/css/*
-include calendargui/web/js/*
-include calendargui/*.js
+include calendarcli/calendargui/web/*
+include calendarcli/calendargui/web/css/*
+include calendarcli/calendargui/web/js/*
+include calendarcli/calendargui/*.js

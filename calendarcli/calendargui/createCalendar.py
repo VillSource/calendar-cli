@@ -13,6 +13,7 @@ def getDayList(date):
         event = selectAllTableOnMounth(date.year,date.month)
         
     except :
+        print(date)
         date = re.split((r'\D+'), date)
         date = datetime.date(int(date[0]),int(date[1]),int(date[2]))
         diff = getDifDay(date)

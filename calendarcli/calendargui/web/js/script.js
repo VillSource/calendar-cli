@@ -1,5 +1,6 @@
 let date;
 let dateType
+let selectDate
 getDateString = date =>`${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`
 const monthNames = ["January", "February", "March", "April", "May", "June",
   "July", "August", "September", "October", "November", "December"
@@ -24,6 +25,7 @@ function clearDaylist(){
 }
 async function setDayList(s) {
     clearDaylist()
+    let i = new Date(dateType.getFullYear(),dateType.getMonth()+1,1).getDay()
     let n = await eel.getDayList(s)();
     const container = document.getElementById("dividing_day-event")
     c=document.getElementById("calendar")
@@ -40,13 +42,31 @@ async function setDayList(s) {
     document.getElementById("month").textContent = monthNames[dateType.getMonth()]
     n[1].forEach(element=>{
         dateEvent = new Date(element[2]);
+        // dateEvent.setMonth(dateEvent.getMonth()+1)
+        // console.log(dateEvent);
+        // console.log(element[2]);
         const newEvent = document.createElement('section')
         newEvent.innerText=`${element[1]}`
         newEvent.className = "task task--primary"
-        newEvent.style.gridColumn = dateEvent.getDay()
-        newEvent.style.gridRow = getWeekOfMonth(dateEvent)
+        newEvent.setAttribute("onclick",'detailEvent(this)')
+        newEvent.style.gridColumn = `${dateEvent.getDay()+1} / span 1`
+        newEvent.style.gridRow = Math.floor((i+6+dateEvent.getDate())/7)+1
+        newEvent.id = element[2]
         insertAfter(container,newEvent)
     })
+}
+
+function detailEvent(a){
+    dateEvent = new Date(a.id)
+    i= new Date(dateEvent.getFullYear(),dateEvent.getMonth()+1,1).getDay()
+
+    console.log(dateEvent);
+    eel.printtext(a.id)
+
+    col = dateEvent.getDay()+1
+    row=  Math.floor((i+6+dateEvent.getDate())/7)
+
+    eel.printtext(`position is [${row},${col}]`)
 }
 
 function insertAfter(referenceNode, newNode) {
@@ -55,7 +75,7 @@ function insertAfter(referenceNode, newNode) {
 function getWeekOfMonth(date) {
     let adjustedDate = date.getDate()+date.getDay();
     let prefixes = ['0', '1', '2', '3', '4', '5'];
-    return (parseInt(prefixes[0 | adjustedDate / 7])+1);
+    return (parseInt(prefixes[0 | adjustedDate / 7])+2);
 }
 
 
@@ -75,15 +95,16 @@ btn.addEventListener("click",clearDaylist)
 
 function menu(){
     
-    document.getElementById("option").style.display ="grid"
-    document.getElementById("overlay").style.display = "block"
+    document.getElementById("option").className='show'
+    document.getElementById("overlay").id = 'overlayed'
     // eel.printtext("a.innerText");
 }
 
 function x(){
     console.log("cls");
-    document.getElementById("option").style.display ="none"
-    document.getElementById("overlay").style.display = "none"
+    document.getElementById("option").className = "nonshow"
+    document.getElementById("overlayed").id ='overlay'
+    document.getElementById('addbox').className = "nonshow"
 }
 
 function selectedM(a){
@@ -108,5 +129,25 @@ function selectedY(a){
 }
 
 function addEvent(a){
-    console.log(!!a.id);
+    if(!!a.id){
+        id = a.id.slice(1,10)
+        selectDate = id
+        eel.printtext(id)
+        document.getElementById('addbox').className = "show"
+        document.getElementById('addinto').innerText = "Add Event to "+id
+        document.getElementById("overlay").id = "overlayed"
+    }
 }
+
+function submitEvent(a){
+    form = a.parentNode.parentNode;
+
+    eventNamme = form.event_name.value
+    eventDetail = form.event_detail.value
+
+    eel.upload(eventNamme,selectDate,eventDetail)
+    setDayList(date)
+    x()
+}
+
+

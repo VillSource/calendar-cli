@@ -69,9 +69,18 @@ body {
     /* pointer-events: none; */
     z-index: 1;
 }
+.day:hover{
+    background-color: #4787ff91;
+    color: white;
+
+}
 .today {
     color: #fff;
     background-color: #99a1a7;
+}
+.day--disabled:hover{
+    background-color: white;
+    color: rgba(152, 160, 166, 0.6);
 }
 
 .day-name:nth-of-type(n){
@@ -274,8 +283,69 @@ body {
 
 
 
-#option{
-    display: none;
+
+
+
+
+
+.form-element{
+    color: #333;
+    grid-column: 1;
+}
+
+.form-element .form-leble{
+    width: 100%;
+}
+
+.form-submit button{
+    width: 49%;
+    height: 40px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    transition-duration: .5s
+}
+
+.form-submit button[type=submit]:hover{
+    background-color: lightseagreen;
+    box-shadow: 0px 2px 20px rgba(32, 178, 170,.3);
+}
+.form-submit button[type=submit]:active{
+    background-color: rgb(177, 177, 177);
+}
+.form-submit button:hover{
+    background-color: rgb(151, 151, 151);
+    box-shadow: 0px 2px 20px rgba(0, 0, 0, 0.3);
+}
+.form-submit button:active{
+    background-color: rgb(177, 177, 177);
+}
+
+input[type=text], textarea{
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    
+    transition-duration: .5s
+}
+
+.show{
+    transition-duration: .1s;
+    opacity: 1;
+}
+.nonshow{
+    transition-duration: .1s;
+    opacity: 0;
+    visibility: hidden;
+}
+
+
+#option,#addbox{
+    display: grid;
     width: 100%;
     grid-template-columns: repeat(2);
     border-top-width: 3px;
@@ -289,10 +359,14 @@ body {
     grid-row: 1;
     background: #f1f1f1;
     color: #00000000;
-    z-index: 3;
+    z-index: 5;
     border-radius: 10px;
     box-shadow: 0px 2px 20px rgba(0, 0, 0, 0.3);
-    
+}
+#addbox{
+    display: grid;
+    grid-row: 1/ span 4;
+    overflow: scroll;
 }
 
 #selectMonth{
@@ -335,17 +409,47 @@ body {
     grid-column: 2;
 }
 
-  .dropdown-content a {
+  .dropdown-content a, #addbox a {
     color: black;
     padding: 12px 16px;
     text-decoration: none;
     display: block;
     text-align: center;
   }
-  .dropdown-content h1 {
+  .dropdown-content h1 ,#addbox h1 {
     color: black;
     padding: 12px 16px;
     text-align: center;
     text-decoration: none;
     display: block;
+  }
+
+  #overlayed{
+    transition-duration: .3s;
+    display: block;
+    background-color: rgba(0, 0, 0, 0.3);
+    top: 0%;
+    left: 0%;
+    right: 0%;
+    bottom: 0%;
+    width: 100hv;
+    position: fixed;
+    z-index: 4;        
+  }
+  #overlay{
+    transition-duration: .3s;
+    /* display: none; */
+    background-color: rgba(0, 0, 0, 0);
+    top: 100%;
+    left: 0%;
+    right: 0%;
+    bottom: 0%;
+    width: 100hv;
+    position: fixed;
+    z-index: 4;        
+  }
+
+  #adkfs{
+      grid-column: 1;
+      grid-row: 6;
   }

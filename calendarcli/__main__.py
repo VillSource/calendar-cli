@@ -53,7 +53,7 @@ def main():
         icalendar.printCalendar()
 
     elif o == "--start":
-        from calendargui.app import start
+        from calendarcli.calendargui.app import start
         start()
 
     else:

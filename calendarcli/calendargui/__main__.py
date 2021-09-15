@@ -1,5 +1,5 @@
 import datetime
-from calendargui.app import start
+from calendarcli.calendargui.app import start
 
 def main():
     print("GUI main")

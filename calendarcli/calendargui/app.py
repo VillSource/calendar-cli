@@ -1,7 +1,8 @@
 import eel
 import sys
-from calendargui.createCalendar import getDayList as getday
+from calendarcli.calendargui.createCalendar import getDayList as getday
 from calendarcli.path import fullPath
+from calendarcli.calendargui.uploadEvent import *
 
 eel.init(fullPath('calendargui/web'))
 
@@ -14,6 +15,4 @@ def start():
 @eel.expose
 def printtext(s:str):
     print(s)
-# @eel.expose
-# def getDayList(date):
-#     return getday(date)
+
