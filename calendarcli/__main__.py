@@ -12,7 +12,8 @@ gunOptions = [
     "list",
     "modify",
     "search=",
-    "confirm"
+    "confirm",
+    "start"
 ]
 
 
@@ -50,6 +51,10 @@ def main():
     elif o == "calendar":
         import calendarcli.icalendar as icalendar
         icalendar.printCalendar()
+
+    elif o == "--start":
+        from calendarcli.calendargui.app import start
+        start()
 
     else:
         import calendarcli.help
