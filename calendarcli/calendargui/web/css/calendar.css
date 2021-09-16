@@ -218,6 +218,7 @@ body {
     color: #0a5eff;
 }
 .task--primary {
+    cursor: pointer;
     background: #4786ff;
     border: 0;
     border-radius: 4px;
@@ -228,9 +229,12 @@ body {
     box-shadow: 0 10px 14px rgba(71, 134, 255, 0.4);
 }
 .task__detail {
+    visibility: hidden;
     position: absolute;
     left: 0;
     top: calc(100% + 10px);
+    max-width: 300px;
+    word-wrap: break-word;
     background: #fff;
     border: 1px solid rgba(166, 168, 179, 0.2);
     color: #000;
@@ -239,6 +243,9 @@ body {
     border-radius: 4px;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
     z-index: 2;
+}
+.task--primary:hover .task__detail{
+    visibility: visible;
 }
 .task__detail:after, .task__detail:before {
     bottom: 100%;
@@ -313,6 +320,14 @@ body {
 .form-submit button[type=submit]:active{
     background-color: rgb(177, 177, 177);
 }
+.form-submit #delete:hover{
+    background-color: rgb(178, 32, 81);
+    border: hidden;
+    box-shadow: 0px 2px 20px rgba(206, 38, 38, 0.609);
+}
+.form-submit #delete:active{
+    background-color: rgb(177, 177, 177);
+}
 .form-submit button:hover{
     background-color: rgb(151, 151, 151);
     box-shadow: 0px 2px 20px rgba(0, 0, 0, 0.3);
@@ -344,7 +359,7 @@ input[type=text], textarea{
 }
 
 
-#option,#addbox{
+#option,#addbox,#detail{
     display: grid;
     width: 100%;
     grid-template-columns: repeat(2);
@@ -363,7 +378,7 @@ input[type=text], textarea{
     border-radius: 10px;
     box-shadow: 0px 2px 20px rgba(0, 0, 0, 0.3);
 }
-#addbox{
+#addbox,#detail{
     display: grid;
     grid-row: 1/ span 4;
     overflow: scroll;
@@ -409,14 +424,14 @@ input[type=text], textarea{
     grid-column: 2;
 }
 
-  .dropdown-content a, #addbox a {
+  .dropdown-content a, #addbox a,#detail a {
     color: black;
     padding: 12px 16px;
     text-decoration: none;
     display: block;
     text-align: center;
   }
-  .dropdown-content h1 ,#addbox h1 {
+  .dropdown-content h1 ,#addbox h1, #detail h1 {
     color: black;
     padding: 12px 16px;
     text-align: center;

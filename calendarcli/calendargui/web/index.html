@@ -121,7 +121,7 @@
                 <form id="form-event-add" method="post" onsubmit="return false;">
                     <div class="form-element">
                         <label for="Event_name" class="form-label">Event name</label>
-                        <input id="Event_name" type="text" name="event_name">
+                        <input autofocus id="Event_name" type="text" name="event_name">
                     </div>
                     <div class="form-element">
                         <label for="event_detail" class="form-label">Event Detail</label>
@@ -129,17 +129,36 @@
                     </div>
                     <div class="form-element form-submit">
                         <button onclick="submitEvent(this)" id="summit" class="btn" type="submit" name="submit">Add</button>
-                        <button onclick="x()" id="unsubmit" class="btn off" name="cancel">Cansel</button>
+                        <button onclick="x()" id="unsubmit" class="btn" name="cancel">Cansel</button>
                     </div>
                 </form>
             </section>
+            
+            <section id="detail" class="nonshow" >
+                <h1>Event Details.</h1>
+                <form id="form-event-update" method="post" onsubmit="return false;">
+                    <div class="form-element">
+                        <label for="Event_name" class="form-label">Event name</label>
+                        <input autofocus id="Event_name" type="text" name="event_name">
+                    </div>
+                    <div class="form-element">
+                        <label for="event_detail" class="form-label">Event Detail</label>
+                        <textarea id="event_detail" type="text" cols="40" rows="5" name="event_detail"></textarea>
+                    </div>
+                    <div class="form-element form-submit">
+                        <button onclick="submitEventUpdate(this)" id="summit" class="btn" type="submit" name="submit">Update</button>
+                        <button onclick="deleteSelectedEvent()" id="delete" class="btn delete" name="cancel">Delete</button>
+                    </div>
+                </form>
+            </section>
+
         </div>
     </div>
 
-    <button id = "btn">add day</button>
+    <!-- <button id = "btn">add day</button>
     <button id = "btn2">clear day</button>
 
-    <p id="rr" onclick="f(this)">akdf;akjdfafjdsjfasfj</p>
+    <p id="rr" onclick="f(this)">akdf;akjdfafjdsjfasfj</p> -->
 
 
     <script type="text/javascript" src="js/script.js"></script>

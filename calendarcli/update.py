@@ -19,7 +19,9 @@ def data(a, opt):
         id = int(a)
     except :
         oldEvent = a
-
+    if not opt:
+        print("Pleas enter data to update. or --help")
+        sys.exit()
     for i, j in opt:
         if i in ("--date", '-d'):
             if isDate(j):

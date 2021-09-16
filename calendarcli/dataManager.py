@@ -32,7 +32,8 @@ def creatTable(table=tables):
                     ID INTEGER PRIMARY KEY AUTOINCREMENT,
                     event TEXT,
                     date TEXT,
-                    jday INTEGER
+                    jday INTEGER,
+                    detail TEXT
                 );''')
     except Exception as e:
         pass
@@ -40,27 +41,29 @@ def creatTable(table=tables):
 
 
 ## Add and update
-def insertData(event, date, table=tables):
+def insertData(event, date,detail="NULL", table=tables):
     command = f"""
-        insert into {table} (event,date,jday) values ("{event}",date("{date}"),julianday("{date}"))
+        insert into {table} (event,date,jday,detail) values ("{event}",date("{date}"),julianday("{date}"),"{detail}")
     """
     executeSQL(command)
 
-def update(ref,date='',event='',table=tables):
+def update(ref,date='',event='',detail='',table=tables):
     try:ref = f"id = '{int(ref)}'"
     except: ref = f"event = '{ref}'"
     if ref:
         dataSet = ""
         if date: dataSet += f"date = '{date}',jday = julianday('{date}'),"
         if event: dataSet += f"event = '{event}',"
+        if detail: dataSet += f"detail = '{detail}',"
 
-        cmmand =f"""
-            UPDATE {table}
-            SET {dataSet[:-1]}
-            WHERE {ref};
-        """
-        executeSQL(cmmand)
-        return True
+        if dataSet:
+            cmmand =f"""
+                UPDATE {table}
+                SET {dataSet[:-1]}
+                WHERE {ref};
+            """
+            executeSQL(cmmand)
+            return True
     return False
 
 

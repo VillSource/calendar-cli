@@ -25,7 +25,10 @@ function clearDaylist(){
 }
 async function setDayList(s) {
     clearDaylist()
-    let i = new Date(dateType.getFullYear(),dateType.getMonth()+1,1).getDay()
+    let thismonth = new Date(dateType.getFullYear(),dateType.getMonth(),1)
+    // i.setDate(1)
+    let i = parseInt(thismonth.getDay())
+    console.log("this month"+i);
     let n = await eel.getDayList(s)();
     const container = document.getElementById("dividing_day-event")
     c=document.getElementById("calendar")
@@ -35,6 +38,7 @@ async function setDayList(s) {
         newDay.innerText=`${element[0]}`
         newDay.id=element[2]
         newDay.setAttribute("onclick","addEvent(this)")
+        newDay.onmouseup ="document.getElementById('Event_name').select()"
         // console.log(element[3]);
         c.insertBefore(newDay,container)
     });
@@ -51,22 +55,35 @@ async function setDayList(s) {
         newEvent.setAttribute("onclick",'detailEvent(this)')
         newEvent.style.gridColumn = `${dateEvent.getDay()+1} / span 1`
         newEvent.style.gridRow = Math.floor((i+6+dateEvent.getDate())/7)+1
-        newEvent.id = element[2]
+        newEvent.id = element[0]
+        // newEvent.id = Math.floor((i+dateEvent.getDate()))
+        console.log(i+'\t'+dateEvent.getDate());
+        if(element[4]!='NULL'){
+            const detail = document.createElement('div');
+            detail.className = "task__detail"
+            detail.innerHTML = `<h1>${element[1]}</h1><p>${element[4]}</p>`
+            newEvent.appendChild(detail)
+        }
         insertAfter(container,newEvent)
     })
 }
 
+let idUpdateRef
 function detailEvent(a){
-    dateEvent = new Date(a.id)
-    i= new Date(dateEvent.getFullYear(),dateEvent.getMonth()+1,1).getDay()
-
-    console.log(dateEvent);
-    eel.printtext(a.id)
-
-    col = dateEvent.getDay()+1
-    row=  Math.floor((i+6+dateEvent.getDate())/7)
-
-    eel.printtext(`position is [${row},${col}]`)
+    idUpdateRef = a.id
+    text = a.innerText.split(/\r\n|\n\r|\n|\r/)
+    eventName = text[0]
+    event_detail = ""
+    if(text.length==4){
+        event_detail = text[3]
+    }
+    console.log(eventName,event_detail);
+    document.getElementById("overlay").id = "overlayed"
+    obj = document.getElementById("detail")
+    obj.className = "shoe"
+    obj = obj.getElementsByTagName("form")[0]
+    obj.event_name.value = eventName
+    obj.event_detail.value = event_detail
 }
 
 function insertAfter(referenceNode, newNode) {
@@ -105,6 +122,7 @@ function x(){
     document.getElementById("option").className = "nonshow"
     document.getElementById("overlayed").id ='overlay'
     document.getElementById('addbox').className = "nonshow"
+    document.getElementById('detail').className =  "nonshow"
 }
 
 function selectedM(a){
@@ -136,6 +154,13 @@ function addEvent(a){
         document.getElementById('addbox').className = "show"
         document.getElementById('addinto').innerText = "Add Event to "+id
         document.getElementById("overlay").id = "overlayed"
+        setTimeout(()=>{
+            document.getElementById('event_detail').value = ""
+            title =document.getElementById('Event_name')
+            this.value = ""
+            title.focus()
+            title.select()
+        },100)
     }
 }
 
@@ -150,4 +175,21 @@ function submitEvent(a){
     x()
 }
 
+function submitEventUpdate(a){
+    form = a.parentNode.parentNode;
+
+    eventNamme = form.event_name.value
+    eventDetail = form.event_detail.value
+
+    console.log(idUpdateRef);
+    eel.updateEvent(idUpdateRef,eventNamme,selectDate,eventDetail)
+    setDayList(date)
+    x()
+}
+
+function deleteSelectedEvent(){
+    eel.deleteByID(idUpdateRef)
+    setDayList(date)
+    x()
+}
 
