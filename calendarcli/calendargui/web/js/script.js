@@ -148,9 +148,9 @@ function selectedY(a){
 
 function addEvent(a){
     if(!!a.id){
-        id = a.id.slice(1,10)
+        id = a.id.slice(1,11)
         selectDate = id
-        eel.printtext(id)
+        // eel.printtext("\t\t\t\tAdd Event : "+id)
         document.getElementById('addbox').className = "show"
         document.getElementById('addinto').innerText = "Add Event to "+id
         document.getElementById("overlay").id = "overlayed"
@@ -170,6 +170,7 @@ function submitEvent(a){
     eventNamme = form.event_name.value
     eventDetail = form.event_detail.value
 
+    eel.printtext("\t\t\t\tAdd Event : "+selectDate)
     eel.upload(eventNamme,selectDate,eventDetail)
     setDayList(date)
     x()
