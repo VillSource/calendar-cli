@@ -19,7 +19,7 @@ cd calendar-cli
 pip install ./
 ```
 
-# Manual
+# Guide
 
 Calendar-cli is a commandlind aplication for a simple management.
 You can use one of three command below to run script. If command have no argument, script will show you a crrent month carendar.
@@ -143,4 +143,22 @@ ccal -l10
 ```bash
 ccal --list --modify # You can use -m instead --modify
 ccal -lm
+```
+
+## GUI option
+
+On GUI option you can add, update, remove, and view your calendar in graphic mode.
+
+![GUI MODE](https://github.com/VillSource/calendar-cli/blob/master/document/GUI.png?raw=true)
+
+Enter GUI option by
+
+```bash
+ccal --start
+```
+
+or
+
+```bash
+gcal
 ```

@@ -193,4 +193,3 @@ function deleteSelectedEvent(){
     setDayList(date)
     x()
 }
-
