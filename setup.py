@@ -31,6 +31,8 @@ setup(
             'calendar = calendarcli.__main__:main',
             'calendar-cli = calendarcli.__main__:main',
             'ccal = calendarcli.__main__:main',
-            'gcal = calendarcli.calendargui.__main__:main'
+            'gcal = calendarcli.calendargui.__main__:main',
+            'anirut = calendarcli.typer_version:main',
+            "ggg = calendarcli.data.google_calendar:main"
         ]
     })
