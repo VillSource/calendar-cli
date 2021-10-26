@@ -2,6 +2,7 @@ from dataclasses import dataclass, asdict, field
 from datetime import datetime
 import os,sys, sqlite3
 import julian
+from rich import print
 
 database = "schedule.db"
 tables = "events"
@@ -12,7 +13,7 @@ class Data:
     name:str
     uuid:str=''
     detail:str=''
-    juliandate:float = field(default=0,init = False)
+    juliandate:float = field(default=julian.to_jd(today,fmt='jd'))
 
     @property
     def date(self):
@@ -28,6 +29,8 @@ class Data:
         except AttributeError:
           self.juliandate = float(v)
 
+
+
 def getPath(filename):
     bundle_dir = getattr(sys, '_MEIPASS', os.path.abspath(os.path.dirname(__file__)))
     return os.path.abspath(os.path.join(bundle_dir, filename))
@@ -35,51 +38,76 @@ def getPath(filename):
 
 
 class Database:
-    def __init__(self, database = database, tables = tables):
-        
+
+    def __init__(self, database = database, tables = tables):        
         self.database = database
         self.tables = tables
-       
+        self.callback = None       
         try:
-            self.connection = sqlite3.connect(getPath(database))
-            a=list(self.connection.execute(f"""
-                SELECT name FROM sqlite_master WHERE type='table' AND name='{tables}';
-            """))
-
-            if(not (tables,) in a): self.create_table()
-
+            with sqlite3.connect(getPath(database)) as connection:
+                a=list(connection.execute(f"""
+                    SELECT name FROM sqlite_master WHERE type='table' AND name='{self.tables}';
+                """))
+                if(not (self.tables,) in a): self.create_table().execute()
         except Exception as e:print(e)
 
 
-    def create_table(self):
-        self.connection.execute(
-            f'''
-                create table {self.tables}(
-                    ID INTEGER PRIMARY KEY AUTOINCREMENT,
-                    uuid TEXT,
-                    name TEXT,
-                    juliandate INTEGER,
-                    detail TEXT
-            );'''
-        )
+
+    def execute(self):
+        data = None
+        try:
+            with sqlite3.connect(getPath(database)) as con:
+                data = con.execute(self.command)
+        except Exception as e:
+            print(f"Error ->{e}")
+        if self.callback is not None:
+            data = self.callback(data)
+        self.command = None
+        self.callback = None
+        return data
+
+
+
+    def create_table(self, table = None):
+        if table is not None: self.tables = table
+        self.command = f'''
+            create table {self.tables}(
+                ID INTEGER PRIMARY KEY AUTOINCREMENT,
+                uuid TEXT,
+                name TEXT,
+                juliandate INTEGER,
+                detail TEXT
+        );'''
+        return self
 
     
     def add(self,data:Data):
-        command = f'''
-            insert into {tables} {tuple( x  for x in asdict(data))} values {tuple( asdict(data)[x]  for x in asdict(data))};
+        self.command = f'''
+            insert into {self.tables} {tuple( x  for x in asdict(data))} values {tuple( asdict(data)[x]  for x in asdict(data))};
         '''
-        print(command)
-        self.connection.execute(command)
+        return self
+
+    @property
+    def getall(self):
+        self.command = f"select * from {self.tables}"
+        def callback(data):
+            datalist = []
+            for i in list(data):
+                tmp = Data(i[2],i[1],i[4],i[3])
+                datalist.append(tmp)
+            return datalist
+        self.callback = callback
+        return self
 
 
 
 
 
-if __name__ != "__main__":
+if __name__ == "__main__":
     import pprint
     d = Database()
     a = Data("deksdflafjasdf","chaogal","de nada")
-    pprint.pprint(a)
-    # d.add(a)
-    # d.connection.close()
+
+    d.add(a).execute()
+    print(d.getall.execute())
     

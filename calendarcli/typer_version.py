@@ -93,7 +93,8 @@ def logout():
 
 @app.command()
 def tmp():
-    from .data.db import Database
+    # from .data.db import Database
+    from .data import google_calendar 
     # console.print(service.calendar_list())
 
 

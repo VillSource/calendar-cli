@@ -5,12 +5,19 @@ from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
-from .db import getPath
+from .db import getPath, Data, Database
+from .setting import *
+from rich import print
 from .setting import *
 
 
 # If modifying these scopes, delete the file token.json.
 SCOPES = ['https://www.googleapis.com/auth/calendar']
+
+CNAME = getConfig('calendar','NAME')
+CID = getConfig('calendar','ID')
+
+database = Database()
 
 class Service():
 
@@ -19,6 +26,7 @@ class Service():
         Service.SCOPES = scopes
         Service.token_file = getPath('token.json')
         Service.credentials_file = getPath('credentials.json')
+        self._newCalendar(CNAME)
 
 
     def login(self):
@@ -56,7 +64,7 @@ class Service():
 
 
 
-    def calendar_list(self):
+    def _calendar_list(self):
         self.login()
         page_token = None
         self.calendar = {} 
@@ -71,10 +79,32 @@ class Service():
             if not page_token:
                 break
         return self.calendar
+
+
+    def _newCalendar(self,CNAME):
+        clist = self._calendar_list()
+        if(CNAME not in clist):
+            self.service.calendars().insert(body={
+                'summary': CNAME
+            }).execute()
+
+
+    def download(self):
+        page_token = None
+        while True:
+            events = self.service.events().list(calendarId=CID, pageToken=page_token).execute()
+            for event in events['items']:
+                tmp = Data(event['summary'],event['id'])
+                database.add(tmp).execute()
+            page_token = events.get('nextPageToken')
+            if not page_token:
+                break
     
 
     
 
 
-if __name__ == '__main__':
-    pass
+if __name__ != '__main__':
+    print("google service")
+    service = Service()
+    service.download()
