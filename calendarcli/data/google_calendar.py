@@ -90,6 +90,7 @@ class Service():
 
 
     def download(self):
+        self.login()
         page_token = None
         while True:
             events = self.service.events().list(calendarId=CID, pageToken=page_token).execute()

@@ -7,6 +7,9 @@ calendarcli/data/schedule.db
 # bath file
 *.bat
 
+#token
+calendarcli/data/token.json
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
