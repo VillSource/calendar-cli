@@ -80,7 +80,7 @@ def login():
     'description login func'
     with console.status("[bold green]Working on tasks...") as status:
         service.login()
-        console.log('completes.')
+        console.log('Login completes.')
 
 
 @app.command()
@@ -88,14 +88,17 @@ def logout():
     'description logout func'
     with console.status("[bold green]Delete token file...") as status:
         service.logout()
+        console.log('Logout completes.')
                 
         
 
 @app.command()
 def tmp():
+    from .GUI import app
+    app.start()
     # from .data.db import Database
-    from .data import google_calendar 
-    # console.print(service.calendar_list())
+    # from .data import google_calendar 
+
 
 
 

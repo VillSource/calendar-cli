@@ -1,23 +1,53 @@
 from dataclasses import dataclass, asdict, field
-from datetime import datetime
+from datetime import datetime, timedelta
 import os,sys, sqlite3
 import julian
 from rich import print
+from tzlocal import get_localzone
 
 database = "schedule.db"
 tables = "events"
-today = datetime.today()
+today = datetime.today().replace(tzinfo=get_localzone())
 
 @dataclass
 class Data:
     name:str
     uuid:str=''
     detail:str=''
+    location:str=''
+    htmllink:str=''
     juliandate:float = field(default=julian.to_jd(today,fmt='jd'))
+    juliandateEnd: float = field(default=julian.to_jd(today+timedelta(hours=1), fmt='jd'))
+
+    @property
+    def start(self):return Data.__jd_to_date(self.juliandate)
+    @property
+    def end(self):return Data.__jd_to_date(self.juliandateEnd)
+    
+    @start.setter
+    def start(self, value):
+        self.juliandate = Data.__to_jd(value)
+        self.juliandateEnd = Data.__to_jd(Data.__jd_to_date(self.juliandate)+timedelta(hours=1))
+    @end.setter
+    def end(self, value):
+        self.juliandateEnd = Data.__to_jd(value)
+
+    def __jd_to_date(jd:float):
+        return julian.from_jd(jd, fmt='jd').replace(tzinfo=get_localzone())
+
+    def __to_jd(v):
+      try:
+        return julian.to_jd(v, fmt='jd')
+      except AttributeError:
+        try:
+          return  julian.to_jd(datetime(v.year, v.month, v.day), fmt='jd')
+        except AttributeError:
+          return float(v)
+
 
     @property
     def date(self):
-      return julian.from_jd(self.juliandate, fmt='jd')
+      return julian.from_jd(self.juliandate, fmt='jd').replace(tzinfo=get_localzone())
     
     @date.setter
     def date(self,v):
@@ -68,14 +98,16 @@ class Database:
 
 
 
-    def create_table(self, table = None):
-        if table is not None: self.tables = table
+    def create_table(self):
         self.command = f'''
             create table {self.tables}(
                 ID INTEGER PRIMARY KEY AUTOINCREMENT,
                 uuid TEXT,
                 name TEXT,
                 juliandate INTEGER,
+                juliandateEnd INTEGER,
+                location TEXT,
+                htmllink TEXT,
                 detail TEXT
         );'''
         return self
@@ -85,6 +117,7 @@ class Database:
         self.command = f'''
             insert into {self.tables} {tuple( x  for x in asdict(data))} values {tuple( asdict(data)[x]  for x in asdict(data))};
         '''
+        # print(self.command)
         return self
 
     @property
@@ -104,10 +137,11 @@ class Database:
 
 
 if __name__ == "__main__":
-    import pprint
-    d = Database()
-    a = Data("deksdflafjasdf","chaogal","de nada")
+    pass
+    # import pprint
+    # d = Database()
+    # a = Data("deksdflafjasdf","chaogal","de nada")
 
-    d.add(a).execute()
-    print(d.getall.execute())
+    # d.add(a).execute()
+    # print(d.getall.execute())
     
