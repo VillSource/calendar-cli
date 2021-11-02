@@ -29,3 +29,8 @@ setup(
             "ggg = calendarcli.GUI.app:start"
         ]
     })
+
+
+if __name__ == '__main__':
+    from calendarcli.data.setting import setConfig
+    setConfig('calendar','ID','None')

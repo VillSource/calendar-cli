@@ -9,14 +9,17 @@ jQuery(document).ready(function () {
         multipleDatesSeparator: " - "
     });
     jQuery("#add-event").submit(function () {
-        alert("Submitted");
+        // alert("Submitted");
+        form = $('#add-event')
         var values = {};
-        $.each($('#add-event').serializeArray(), function (i, field) {
+        $.each(form.serializeArray(), function (i, field) {
             values[field.name] = field.value;
         });
-        console.log(
-            values
-        );
+        if(values['name']==''){
+            alert("Please Enter event name.")
+        }else{
+            eel.addEventGoogle(values)
+        }
         return false;
     });
 });
@@ -48,65 +51,55 @@ jQuery(document).ready(function () {
 
             },
             eventClick: function (event, jsEvent, view) {
-                jQuery('.event-icon').html("<i class='fa fa-" + event.icon + "'></i>");
-                jQuery('.event-title').html(event.title);
+                // jQuery('.event-icon').html("<i class='fa fa-" + event.icon + "'></i>");
+                jQuery('.event-title').html(`<a href='${event.GoogleCalendarUrl}' target="_blank" style="color: #000;">${event.title}</a>`);
                 jQuery('.event-body').html(event.description);
-                jQuery('.eventUrl').attr('href', event.url);
+                // jQuery('.eventUrl').attr('href', event.url);
                 jQuery('#modal-view-event').modal();
             },
             eventDrop: function (event, delta, revertFunc) {
+                // console.log(event);
                 updateEventToGoogle(event)
-                // revertFunc()
             },
             eventResize: function (event, delta, revertFunc) {
                 updateEventToGoogle(event)
             },
             viewRender: function (event, element) {
                 clearEvent();
-                // addEventToCalendar();
                 var date = event.dateProfile.date
-                console.log(date)
-                eel.getEventSourcesGoogle(date.year(),date.month()+1)
+                // console.log(date)
+                clearTimeout(load)
+                load = setTimeout(function () {eel.getEventSourcesGoogle(date.year(),date.month()+1,date.date())},loadEventLag)
+                // eel.getEventSourcesGoogle(date.year(),date.month()+1,date.date())
+
             }
         })
     });
-
-
-
 })(jQuery);
+
+var load
+var loadEventLag = 300
+
+
+
+eel.expose(loadingProgressBarShow);
+function loadingProgressBarShow() { $('.spinner-container').addClass('loading'); }
+
+eel.expose(loadingProgressBarHide);
+function loadingProgressBarHide() { a = $('.spinner-container').removeClass('loading'); }
 
 
 eel.expose(addEventToCalendar)
 function addEventToCalendar(events) {
+    clearEvent();
     var calendar = $('#calendar').fullCalendar();
-    // console.log("addEventToCalendar is running");
     calendar.data('fullCalendar').addEventSource(events)
     moreCell = $('.fc-more-cell')
     if (moreCell[0])
         moreCell.click(function () {
             $('.fc-more-popover').css('background', '#eee')
         })
-
 }
-
-$('#fuck').click(function () {
-    addEventToCalendar()
-})
-
-$('#savechange').click(function () {
-    var calendar = $('#calendar').fullCalendar();
-    console.log(calendar.data('fullCalendar').getEventSources())
-});
-
-// $(".fc-next-button, .fc-prev-button, .fc-today-button").click(function () {
-$("#clear").click(function () {
-    calendar = $('#calendar').fullCalendar().data('fullCalendar');
-    calendar.reinitView()
-    console.log(calendar);
-})
-
-
-
 
 function clearEvent() {
     calendar = $('#calendar').fullCalendar().data('fullCalendar');
@@ -116,5 +109,5 @@ function clearEvent() {
 
 function updateEventToGoogle(event) {
     console.log('updatting');
-    console.log(event);
+    eel.moveEventGoogle(event.guuid,event.start,event.end,event.allDay)
 }

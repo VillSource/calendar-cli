@@ -9,9 +9,14 @@
 <link rel='stylesheet' href='https://maxcdn.icons8.com/fonts/line-awesome/1.1/css/line-awesome-font-awesome.min.css'>
 <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/air-datepicker/2.2.3/css/datepicker.css'>
 <link rel="stylesheet" href="./css/calendar.css">
+<link rel="stylesheet" href="./css/spinner.css">
 
 </head>
 <body>
+<div class="spinner-container"">
+  <div class="spinner" >
+  </div>
+</div>
 <!-- partial:index.partial.html -->
 <div class="p-5">
   <h2 class="mb-4">Full Calendar</h2>
@@ -31,6 +36,7 @@
 					<div class="event-body"></div>
 				</div>
 				<div class="modal-footer">
+          <button type="edit" class="btn btn-primary" >edit</button>
 					<button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
 				</div>
 			</div>
@@ -45,36 +51,34 @@
         <h4>Add Event Detail</h4>        
           <div class="form-group">
             <label>Event name</label>
-            <input type="text" class="form-control" name="ename" autocomplete="off">
+            <input type="text" class="form-control" name="name" autocomplete="off">
           </div>
+          <div class="form-group">
+            <label>Timeline</label>
+            <select class="form-control" name="allDay">
+              <option value="false">Time</option>
+              <option value='true'>All day</option>
+            </select>
+          </div>        
           <div class="form-group" id="pickDate">
             <label>Event Date</label>
-            <input type='text' class="datetimepicker form-control" name="edate" >
+            <input type='text' class="datetimepicker form-control" name="date" >
           </div>        
           <div class="form-group">
             <label>Event Description</label>
-            <textarea class="form-control" name="edesc"></textarea>
+            <textarea class="form-control" name="desc"></textarea>
           </div>
           <div class="form-group">
-            <label>Event Color</label>
-            <select class="form-control" name="ecolor">
+            <label>Location</label>
+            <input type="text" class="form-control" name="location" autocomplete="off">
+            <!-- <select class="form-control" name="ecolor">
               <option value="fc-bg-default">fc-bg-default</option>
               <option value="fc-bg-blue">fc-bg-blue</option>
               <option value="fc-bg-lightgreen">fc-bg-lightgreen</option>
               <option value="fc-bg-pinkred">fc-bg-pinkred</option>
               <option value="fc-bg-deepskyblue">fc-bg-deepskyblue</option>
-            </select>
+            </select> -->
           </div>
-          <div class="form-group">
-            <label>Event Icon</label>
-            <select class="form-control" name="eicon">
-              <option value="circle">circle</option>
-              <option value="cog">cog</option>
-              <option value="group">group</option>
-              <option value="suitcase">suitcase</option>
-              <option value="calendar">calendar</option>
-            </select>
-          </div>        
       </div>
         <div class="modal-footer">
         <button type="submit" class="btn btn-primary" >Save</button>
@@ -85,9 +89,6 @@
   </div>
 </div>
 
-<button type="button" id="fuck">Fuck</button>
-<button type="button" id="savechange">save</button>
-<button type="button" id="clear">clear</button>
 
 
 

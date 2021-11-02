@@ -1,6 +1,4 @@
 from __future__ import print_function
-import requests
-# import datetime
 from datetime import date, timezone, datetime, timedelta
 from tzlocal import get_localzone_name
 import os.path
@@ -14,7 +12,6 @@ from rich import print
 from .setting import *
 
 
-# If modifying these scopes, delete the file token.json.
 SCOPES = ['https://www.googleapis.com/auth/calendar']
 
 CNAME = getConfig('calendar', 'NAME')
@@ -24,49 +21,47 @@ database = Database()
 
 
 class Service():
+    '''
+    Service class is helper class to connect to Google Calendar API
 
+    ...
+    
+    Atributes
+    ---------
+    `SCOPES` : list
+        Google calendar API permision scopes 
+    `calendar` : dict
+        Contain calendar ID, calendar name is a dictionary key to access
+    `service`
+        Google calendar API connection
+
+    Methods
+    --------
+    `login()`
+        Get permistion to your google account and save your token
+    `logout()`
+        Remove permistion token
+    `list_events()`
+
+     '''
+    
+    ##############################################################################
+    #                           Private method
+    ##############################################################################
     def __init__(self, scopes=SCOPES):
         Service.SCOPES = scopes
         Service.token_file = getPath('token.json')
         Service.credentials_file = getPath('credentials.json')
-
-
-    def login(self):
-        """Shows basic usage of the Google Calendar API.
-        Prints the start and name of the next 10 events on the user's calendar.
-        """
-        # The file token.json stores the user's access and refresh tokens, and is
-        # created automatically when the authorization flow completes for the first
-        # time.
-        creds = None
-        if os.path.exists(Service.token_file):
-            creds = Credentials.from_authorized_user_file( Service.token_file, Service.SCOPES)
-        # If there are no (valid) credentials available, let the user log in.
-        if not creds or not creds.valid:
-            if creds and creds.expired and creds.refresh_token:
-                creds.refresh(Request())
-            else:
-                flow = InstalledAppFlow.from_client_secrets_file(
-                    Service.credentials_file, Service.SCOPES)
-                creds = flow.run_local_server(port=0)
-            # Save the credentials for the next run
-            with open(Service.token_file, 'w') as token:
-                token.write(creds.to_json())
-
-        self.service = build('calendar', 'v3', credentials=creds)
-        self._newCalendar(CNAME)
-
-
-    def logout(self):
-        if os.path.exists(Service.token_file):
-            os.remove(Service.token_file)
-
-        else:
-            print("You are not loged in.")
-
-
+        self.login()
 
     def _calendar_list(self):
+        '''List all calendar in Google calendar then keep it on calendar atribute
+        
+        retuen
+        -------
+        dict:
+            Calendar name is a key to calendar ID
+        '''
         page_token = None
         self.calendar = {}
         while True:
@@ -82,22 +77,55 @@ class Service():
                 break
         return self.calendar
 
+    def _newCalendar(self, CNAME:str):
+        ''' Create calendar to Google calendar if not already
 
-    def _newCalendar(self, CNAME):
+        Parameter
+        ----------
+        `CNAME`:str
+            Name of calendar to create
+        '''
         clist = self._calendar_list()
         if(CNAME not in clist):
-            self.service.calendars().insert(body={
+            id =self.service.calendars().insert(body={
                 'summary': CNAME
             }).execute()
-
+            setConfig('calendar','ID',id['id'])
+        else:setConfig('calendar','ID',clist[CNAME])
+        global CID
+        CID = getConfig('calendar','ID')
+        
 
     def __isotime(time: datetime):
+        '''Add timezone to datetime then return datetime in ISO format
+
+        Patameter
+        -----------
+        `time` : datetime
+            Time that you want to format it to ISO format
+        
+        Return
+        --------
+        `str`
+            Time in ISO format or return `None` if not available
+        '''
         if time:
             return time.replace(tzinfo=timezone.utc).isoformat()
         return None
-    
 
     def __toDataclass(event):
+        '''Convert Google event JSON to Dataclass `Data`
+
+        Paramiter
+        ----------
+        `event`
+            Google event object
+
+        Return
+        ---------
+        `Data`
+            Data class to keep event
+        '''
         tmp = Data(event['summary'], event['id'])
         if 'location' in event:
             tmp.location = event['location']
@@ -125,9 +153,47 @@ class Service():
         return tmp
 
 
+    ##############################################################################
+    #                          Public method 
+    ##############################################################################
+    # @property
+    # def service(self):
+    #     global CID
+    #     if not CID:
+    #         CID = getConfig('calendar', 'ID')
+    #     return self.__service
+    # @service.setter
+    # def service(self, service):self.__service = service
+
+    def login(self):
+        """ Get permistion to your google account and save your token"""
+        creds = None
+        if os.path.exists(Service.token_file):
+            creds = Credentials.from_authorized_user_file( Service.token_file, Service.SCOPES)
+        # If there are no (valid) credentials available, let the user log in.
+        if not creds or not creds.valid:
+            if creds and creds.expired and creds.refresh_token:
+                creds.refresh(Request())
+            else:
+                flow = InstalledAppFlow.from_client_secrets_file(
+                    Service.credentials_file, Service.SCOPES)
+                creds = flow.run_local_server(port=0)
+            # Save the credentials for the next run
+            with open(Service.token_file, 'w') as token:
+                token.write(creds.to_json())
+
+        self.service = build('calendar', 'v3', credentials=creds)
+        self._newCalendar(CNAME)
+
+    def logout(self):
+        '''Remove token'''
+        if os.path.exists(Service.token_file):
+            os.remove(Service.token_file)
+
+        else:
+            print("You are not loged in.")
 
     def list_events(self, dateMin: datetime = None, dateMax: datetime = None, RETURN=False,callback=None):
-        self.login()
         dateMin = Service.__isotime(dateMin)
         dateMax = Service.__isotime(dateMax)
         if(RETURN):
@@ -153,37 +219,55 @@ class Service():
         if(RETURN):
             return data
 
-
     def add_event(self, data: Data):
-        print(f"start : {data.start}")
-        print(f"end   : {data.end}")
+        '''Add event to Google calendar.
+        Parameter
+        ------------
+        `data`:Data
+            Event to add to Google calendar
+        '''
         tz = get_localzone_name()
         event = {
             'summary': data.name,
             'start': {
-                'dateTime': data.start.astimezone().isoformat(),
+                'dateTime': data.start.replace(tzinfo=timezone.utc).astimezone().isoformat(),
                 'timeZone': tz
             },
             'end':{
-                'dateTime': data.end.astimezone().isoformat(),
+                'dateTime': data.end.replace(tzinfo=timezone.utc).astimezone().isoformat(),
                 'timeZone': tz
             }
         }
         if data.location :
             event['location'] = data.location
+        if data.detail:
+            event['description'] = data.detail
         
         print(event)
         event = self.service.events().insert(calendarId=CID, body=event).execute()
 
-
     def update_event(self,id:str,confirm,RETURN=False):
+        '''Update event in Google Calendar
+        Parameters
+        ---------
+        `id` :str
+            event ID
+        `confirm`:function
+            funtion callback mannual change value of event
+        `RETURN`:bool
+            Option to return event
+            
+        Return
+        ---------
+        `Data`
+            If option RETURN is True will return the new Event that have updated
+        '''
         data = self.service.events().get(calendarId=CID, eventId=id ).execute()
         data = confirm(data)
         if data:
             updated_event = self.service.events().update(calendarId=CID, eventId=data['id'], body=data).execute()
         if RETURN:
-            return Service.__toDataclass(data)
-
+            return Service.__toDataclass(updated_event)
 
     def delete_event(self,id:str):
         self.service.events().delete(calendarId=CID, eventId=id).execute()
