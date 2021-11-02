@@ -18,9 +18,7 @@ doc_dates = typer.Argument(
     help='Enter event date',
 )
 doc_details = typer.Option(False,'--detail','-d', help='Enter event details',show_default=False)
-doc_location = typer.Option(False,'--location','-p', help='Enter event details',show_default=False)
-
-
+doc_location = typer.Option(False,'--place','-p', help='Enter event details',show_default=False)
 
 
 
@@ -57,19 +55,51 @@ def add(
     print(event.start,event.end)
     service.add_event(event)
 
+
+
 @app.command()
 def update(
-    event = doc_events,
+    id:str = typer.Argument(None,help="Enter ID of event referance"),
+    event:str = typer.Option(None,'--event','-e',help='Enter new event\'s name'),
+    location:str = typer.Option(None,'--place','-p',help='Enter new event\'s location'),
+    detail:str = typer.Option(None,'--detail','-d',help='Enter new event\'s detail')
 ):
     'description update func'
-    print("update")
+    print(event,location,detail)
+    if not id:
+        print('type "ccal list" to find event ID')
+        return
+    if not (event or location or detail):
+        print('Please enter data to update or "ccal update --help"')
+        return
+    def callback(data):
+        if event: data['summary'] = event
+        if location: data['location'] = location
+        if detail: data['description'] = detail
+        return data
+    print(service.update_event(id,callback,True))
+
+
 
 @app.command()
 def delete(
-    event = doc_events,
+    id = typer.Argument(...,help='Enter Event\'s ID'),
 ):
     'description delete delete func'
-    print("delete")
+    def callback(data):
+        msg = ''
+        msg += f"[red]{data['summary']}\n"
+        try: msg += f"'Detail' : '{data['description']}'\n"
+        except: pass
+        try: msg += f"'Place'  : '{data['location']}'\n"
+        except: pass
+        console.print(msg,end='')
+        if input('Do you want to delete this event [y,N] : ').upper() == 'Y':return True
+        return False
+    service.delete_event(id,callback)
+
+
+
 
 @app.command()
 def list(
@@ -105,7 +135,7 @@ def list(
 
     if event:
         for i in event:
-            print(i.name)
+            print(i.name, i.uuid)
     else:print('No events')
         
 

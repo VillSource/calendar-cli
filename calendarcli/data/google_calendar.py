@@ -266,11 +266,14 @@ class Service():
         data = confirm(data)
         if data:
             updated_event = self.service.events().update(calendarId=CID, eventId=data['id'], body=data).execute()
-        if RETURN:
-            return Service.__toDataclass(updated_event)
+            if RETURN: return Service.__toDataclass(updated_event)
 
-    def delete_event(self,id:str):
-        self.service.events().delete(calendarId=CID, eventId=id).execute()
+    def delete_event(self,id:str,confirm=True):
+        if not (confirm  is True or confirm is False):
+            confirm = confirm(self.service.events().get(calendarId=CID, eventId=id ).execute())
+        if confirm:
+            try:self.service.events().delete(calendarId=CID, eventId=id).execute()
+            except:pass
 
 
 

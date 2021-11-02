@@ -1,164 +1,140 @@
+# `Calendar CLI KKU`
 
-# installation step
+**Usage**:
 
-If you do not install python yet. Please install [here](https://www.python.org/)
-
-## pip install
-
-```bash
-pip install calendar-cli-kku
+```console
+$ ccal [OPTIONS] COMMAND [ARGS]...
 ```
 
-## By package install
+**Options**:
 
-If you do not install Git yet. Please install [here](https://git-scm.com/)
+* `--confirm / --no-confirm`: Confirm action
+* `--help`: Show this message and exit.
 
-```bash
-git clone https://github.com/VillSource/calendar-cli.git
-cd calendar-cli
-pip install ./
+**Commands**:
+
+* `add`: Add your event to google calendar
+* `delete`: description delete delete func
+* `list`: Query events from Google calendar
+* `login`: description login func
+* `logout`: description logout func
+* `tmp`
+* `update`: description update func
+
+## `ccal add`
+
+Add your event to google calendar
+
+**Usage**:
+
+```console
+$ ccal add [OPTIONS] EVENT [DATE]:[%Y-%m-%d]
 ```
 
-# Guide
+**Arguments**:
 
-Calendar-cli is a commandlind aplication for a simple management.
-You can use one of three command below to run script. If command have no argument, script will show you a crrent month carendar.
+* `EVENT`: Enter event name  [required]
+* `[DATE]:[%Y-%m-%d]`: Enter event date  [default: 2021-11-02]
 
-```bash
-calendar
+**Options**:
+
+* `-d, --detail TEXT`: Enter event details
+* `-p, --place TEXT`: Enter event details
+* `--help`: Show this message and exit.
+
+## `ccal delete`
+
+description delete delete func
+
+**Usage**:
+
+```console
+$ ccal delete [OPTIONS] ID
 ```
 
-```bash
-calendar-cli
+**Arguments**:
+
+* `ID`: Enter Event's ID  [required]
+
+**Options**:
+
+* `--help`: Show this message and exit.
+
+## `ccal list`
+
+Query events from Google calendar
+
+**Usage**:
+
+```console
+$ ccal list [OPTIONS]
 ```
 
-```bash
-ccal
+**Options**:
+
+* `--on-month INTEGER`: Query events on month[1-12] and current year[2021]
+* `--date-start [%Y-%m-%d]`: Query events start from this date  [default: 2021-11-01]
+* `--date-end [%Y-%m-%d]`: Query events end to this date  [default: 2021-12-01]
+* `-m, --modify`: List event then select to edit
+* `--help`: Show this message and exit.
+
+## `ccal login`
+
+description login func
+
+**Usage**:
+
+```console
+$ ccal login [OPTIONS]
 ```
 
-![Run script](https://github.com/VillSource/calendar-cli/blob/master/document/run.gif?raw=true)
+**Options**:
 
-**All options in CLI**
+* `--help`: Show this message and exit.
 
-- --add, -a
-  - --event, -e
-  - --date, -d
-- --update, -u
-  - --event, -e
-  - --date, -d
-  - --confirm
-- --delete, -d
-  - --confirm
-- --list
-  - --modify, -m
-  - -n
-- -ls
-- -lm
-  - --confirm
-- -l
+## `ccal logout`
 
-## Add data
+description logout func
 
-```--add, -a``` : to add event to your calendar that require event name 
-`--event=<enter your event>, -e <enter your event>` and you can add date to your event by below option.
-If you do not add date to your event program will add current date. 
-`--date="<yyy-mm-dd>, -d<yyy-mm-dd>` : To add date to event (Current date by default)
+**Usage**:
 
-Full option
-
-```bash
-ccal --add --event "Happy birthday" --date 2022-01-19
+```console
+$ ccal logout [OPTIONS]
 ```
 
-Shot option
+**Options**:
 
-```bash
-ccal -a -e "Happy birthday" -d 2022-01-19
+* `--help`: Show this message and exit.
+
+## `ccal tmp`
+
+**Usage**:
+
+```console
+$ ccal tmp [OPTIONS]
 ```
 
-Or you can mix shot option and full option together.
+**Options**:
 
-![Add data](https://github.com/VillSource/calendar-cli/blob/master/document/add.gif?raw=true)
+* `--help`: Show this message and exit.
 
-## Update
+## `ccal update`
 
-```bash
-ccal --update <oldEvent : name or ID> --date <newDate> -e <newEventName>
+description update func
+
+**Usage**:
+
+```console
+$ ccal update [OPTIONS] [ID]
 ```
 
-Update event Birthday Party (ID=`432`)
+**Arguments**:
 
-```bash
-# Update Birthday Party date by name event
-ccal --update "Birthday Party" -d 2021-01-19
+* `[ID]`: Enter ID of event referance
 
-# Update Birthday Party by ID event
-ccal -u 432 -e "My mom birthday Party" -d 2021-05-09
-```
+**Options**:
 
-use `--confirm` at the end for ignore all interaction.
-
-## Delete
-
-```bash
-ccal --delete <name or ID>
-```
-
-Data in database ==> event Birthday Party (ID=`432`)
-
-```bash
-# Delete Birthday Party event by name event
-ccal --delete "Birthday Party"
-
-# Delete Birthday Party by ID event
-ccal --delete 432
-```
-
-use `--confirm` at the end for ignore all interaction.
-
-## List
-
-`--list` : To show all events on this month.
-`--modify, -m` : To secect one of list and modify data or delete.
-`-n <How many month>` : To print several months.
-
-`-ls` : To show all event on this month.
-`-lm` : To secect one of list and modify data or delete
-`-l<1-12>` : To show all event in <0-9> month.
-
-Standard list in curent month
-
-```bash
-ccal --list
-ccal -ls
-```
-
-Standart list in today to 10 years ahead
-
-```bash
-ccal --list -n 10 
-ccal -l10
-```
-
-```bash
-ccal --list --modify # You can use -m instead --modify
-ccal -lm
-```
-
-## GUI option
-
-On GUI option you can add, update, remove, and view your calendar in graphic mode.
-
-![GUI MODE](https://github.com/VillSource/calendar-cli/blob/master/document/GUI.png?raw=true)
-
-Enter GUI option by
-
-```bash
-ccal --start
-```
-
-or
-
-```bash
-gcal
-```
+* `-e, --event TEXT`: Enter new event's name
+* `-p, --place TEXT`: Enter new event's location
+* `-d, --detail TEXT`: Enter new event's detail
+* `--help`: Show this message and exit.
