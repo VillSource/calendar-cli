@@ -19,6 +19,8 @@ def start():
     eel.start('index.html')
 
 
+
+
 @eel.expose
 def getEventSourcesGoogle(year:int, month:int,date:int):
     eel.loadingProgressBarShow()
@@ -41,6 +43,9 @@ def getEventSourcesGoogle(year:int, month:int,date:int):
         eel.addEventToCalendar(eventSources)
     eel.loadingProgressBarHide()
     console.log('Get Event Sources done')
+
+
+
 
 @eel.expose
 def moveEventGoogle(id:str,start:str, end:str, allDay:bool):
@@ -76,6 +81,10 @@ def moveEventGoogle(id:str,start:str, end:str, allDay:bool):
     eel.loadingProgressBarHide()
     console.log('Updated.')
 
+
+
+
+
 def __to_date(data):
     # 11/01/2021 07:00 am
     tmp =([
@@ -93,6 +102,7 @@ def __to_datetime(data):
 
 @eel.expose
 def addEventGoogle(data:dict):
+    eel.loadingProgressBarShow()
     event = Data(data['name'],detail=data['desc'],location=data['location'])
     event.start = __to_date(data['date'])
     if data['allDay'] == 'true':
@@ -101,10 +111,23 @@ def addEventGoogle(data:dict):
         event.start = __to_datetime(data['date'][:19])
         if len(data['date'])>=22: event.end   = __to_datetime(data['date'][22:])
         else:event.end = event.start + timedelta(hours=1)
-    # print(event)
-    # print(event.start)
-    # print(event.end)
-    service.add_event(event)
+    event = service.add_event(event,True)
+    tmp = {}
+    tmp['GoogleCalendarUrl'] = event.htmllink
+    tmp['title'] = event.name
+    tmp['description'] = event.detail
+    tmp['start'] = event.start.isoformat()
+    tmp['end'] = event.end.isoformat()
+    tmp['allDay'] = event.start + timedelta(hours=24) == event.end 
+    tmp['guuid'] = event.uuid
+    eel.addEventToCalendar([tmp],False)
+    eel.loadingProgressBarHide()
+
+@eel.expose
+def delete(id:str):
+    eel.loadingProgressBarShow()
+    service.delete_event(id)
+    eel.loadingProgressBarHide()
     
     
 @eel.expose

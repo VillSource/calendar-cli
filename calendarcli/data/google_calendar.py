@@ -156,14 +156,6 @@ class Service():
     ##############################################################################
     #                          Public method 
     ##############################################################################
-    # @property
-    # def service(self):
-    #     global CID
-    #     if not CID:
-    #         CID = getConfig('calendar', 'ID')
-    #     return self.__service
-    # @service.setter
-    # def service(self, service):self.__service = service
 
     def login(self):
         """ Get permistion to your google account and save your token"""
@@ -219,7 +211,7 @@ class Service():
         if(RETURN):
             return data
 
-    def add_event(self, data: Data):
+    def add_event(self, data: Data, RETURN=False):
         '''Add event to Google calendar.
         Parameter
         ------------
@@ -242,9 +234,8 @@ class Service():
             event['location'] = data.location
         if data.detail:
             event['description'] = data.detail
-        
-        print(event)
         event = self.service.events().insert(calendarId=CID, body=event).execute()
+        if RETURN:return Service.__toDataclass(event)
 
     def update_event(self,id:str,confirm,RETURN=False):
         '''Update event in Google Calendar
