@@ -20,6 +20,8 @@ setup(
         'inquirer',
         'eel',
         'julian',
+        'tzlocal',
+        'monthdelta'
     ],
     entry_points = {
         'console_scripts': [
