@@ -1,4 +1,4 @@
-# `Calendar CLI KKU`
+# `ccal`
 
 **Usage**:
 
@@ -15,6 +15,7 @@ $ ccal [OPTIONS] COMMAND [ARGS]...
 
 * `add`: Add your event to google calendar
 * `delete`: description delete delete func
+* `gui`: Run server Web view for calendar
 * `list`: Query events from Google calendar
 * `login`: description login func
 * `logout`: description logout func
@@ -54,6 +55,20 @@ $ ccal delete [OPTIONS] ID
 **Arguments**:
 
 * `ID`: Enter Event's ID  [required]
+
+**Options**:
+
+* `--help`: Show this message and exit.
+
+## `ccal gui`
+
+Run server Web view for calendar
+
+**Usage**:
+
+```console
+$ ccal gui [OPTIONS]
+```
 
 **Options**:
 
