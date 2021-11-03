@@ -23,6 +23,16 @@ jQuery(document).ready(function () {
         }
         return false;
     });
+    $('#update-event').submit(function () {
+        $('#modal-view-event-update').modal('toggle');
+        var form = $('#update-event')
+        var values = {};
+        $.each(form.serializeArray(), function (i, field) {
+            values[field.name] = field.value;
+        });
+        console.log(values);
+        eel.update(values);
+    })
 });
 
 (function () {
@@ -59,6 +69,16 @@ jQuery(document).ready(function () {
                     deleteEvent(event.guuid);
                     $('#calendar').fullCalendar('removeEvents',event._id);
                     jQuery('#modal-view-event').modal().modal("toggle");
+                })
+                $('#editeventbtn').click(function () {
+                    $('#modal-view-event').modal('toggle');
+                    $('#modal-view-event-update').modal('toggle');
+                    console.log(event);
+                    var form = $('#update-event')
+                    form[0][0].value = event.title;
+                    form[0][1].value = event.description;
+                    form[0][2].value = event.location;
+                    form[0][3].value = event.guuid;
                 })
             },
             eventDrop: function (event, delta, revertFunc) {

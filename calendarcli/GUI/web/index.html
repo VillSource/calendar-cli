@@ -37,7 +37,7 @@
 				</div>
 				<div class="modal-footer">
           <button type="button" class="btn btn-warning" id="deleteeventbtn">delete</button>
-          <button type="button" class="btn btn-primary" >edit</button>
+          <button type="button" class="btn btn-primary" id="editeventbtn">edit</button>
 					<button type="button" class="btn btn-primary" id="deleteeventbtnx" data-dismiss="modal">Close</button>
 				</div>
 			</div>
@@ -97,22 +97,11 @@
     <div class="modal-content">
       <form id="update-event">
         <div class="modal-body">
-        <h4>Add Event Detail</h4>        
+        <h4>Update Event Detail</h4>        
           <div class="form-group">
             <label>Event name</label>
             <input type="text" class="form-control" name="name" autocomplete="off">
-          </div>
-          <div class="form-group">
-            <label>Timeline</label>
-            <select class="form-control" name="allDay">
-              <option value="false">Time</option>
-              <option value='true'>All day</option>
-            </select>
-          </div>        
-          <div class="form-group" id="pickDate">
-            <label>Event Date</label>
-            <input type='text' class="datetimepicker form-control" name="date" >
-          </div>        
+          </div>      
           <div class="form-group">
             <label>Event Description</label>
             <textarea class="form-control" name="desc"></textarea>
@@ -120,6 +109,10 @@
           <div class="form-group">
             <label>Location</label>
             <input type="text" class="form-control" name="location" autocomplete="off">
+          </div>
+          <div class="form-group" style="display: none">
+            <label>Location</label>
+            <input type="text" class="form-control" name="id" autocomplete="off">
           </div>
       </div>
         <div class="modal-footer">

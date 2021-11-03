@@ -19,6 +19,17 @@ def start():
     eel.start('index.html')
 
 
+@eel.expose
+def update(event):
+    eel.loadingProgressBarShow()
+    def tmp(data):
+        data['summary'] = event['name']
+        data['description'] = event['desc']
+        data['location'] = event['location']
+        # print(data)
+        return data
+    service.update_event(event['id'],tmp)
+    eel.loadingProgressBarHide()
 
 
 @eel.expose
