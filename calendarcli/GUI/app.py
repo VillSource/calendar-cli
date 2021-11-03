@@ -39,6 +39,7 @@ def getEventSourcesGoogle(year:int, month:int,date:int):
             tmp['end'] = i.end.isoformat()
             tmp['allDay'] = i.start + timedelta(hours=24) == i.end 
             tmp['guuid'] = i.uuid
+            tmp['location'] = i.location
             eventSources.append(tmp)
         eel.addEventToCalendar(eventSources)
     eel.loadingProgressBarHide()
@@ -103,24 +104,27 @@ def __to_datetime(data):
 @eel.expose
 def addEventGoogle(data:dict):
     eel.loadingProgressBarShow()
-    event = Data(data['name'],detail=data['desc'],location=data['location'])
-    event.start = __to_date(data['date'])
-    if data['allDay'] == 'true':
-        event.end = event.start + timedelta(hours=24)
-    else:
-        event.start = __to_datetime(data['date'][:19])
-        if len(data['date'])>=22: event.end   = __to_datetime(data['date'][22:])
-        else:event.end = event.start + timedelta(hours=1)
-    event = service.add_event(event,True)
-    tmp = {}
-    tmp['GoogleCalendarUrl'] = event.htmllink
-    tmp['title'] = event.name
-    tmp['description'] = event.detail
-    tmp['start'] = event.start.isoformat()
-    tmp['end'] = event.end.isoformat()
-    tmp['allDay'] = event.start + timedelta(hours=24) == event.end 
-    tmp['guuid'] = event.uuid
-    eel.addEventToCalendar([tmp],False)
+    with console.status('[green]Add event'):
+        event = Data(data['name'],detail=data['desc'],location=data['location'])
+        event.start = __to_date(data['date'])
+        if data['allDay'] == 'true':
+            event.end = event.start + timedelta(hours=24)
+        else:
+            event.start = __to_datetime(data['date'][:19])
+            if len(data['date'])>=22: event.end   = __to_datetime(data['date'][22:])
+            else:event.end = event.start + timedelta(hours=1)
+        event = service.add_event(event,True)
+        tmp = {}
+        tmp['GoogleCalendarUrl'] = event.htmllink
+        tmp['title'] = event.name
+        tmp['description'] = event.detail
+        tmp['start'] = event.start.isoformat()
+        tmp['end'] = event.end.isoformat()
+        tmp['allDay'] = event.start + timedelta(hours=24) == event.end 
+        tmp['guuid'] = event.uuid
+        tmp['location'] = event.location
+        eel.addEventToCalendar([tmp],False)
+        console.log('Added event')
     eel.loadingProgressBarHide()
 
 @eel.expose

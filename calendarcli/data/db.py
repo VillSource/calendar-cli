@@ -138,10 +138,4 @@ class Database:
 
 if __name__ == "__main__":
     pass
-    # import pprint
-    # d = Database()
-    # a = Data("deksdflafjasdf","chaogal","de nada")
-
-    # d.add(a).execute()
-    # print(d.getall.execute())
     

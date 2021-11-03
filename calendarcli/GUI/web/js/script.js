@@ -53,7 +53,7 @@ jQuery(document).ready(function () {
             },
             eventClick: function (event, jsEvent, view) {
                 jQuery('.event-title').html(`<a href='${event.GoogleCalendarUrl}' target="_blank" style="color: #000;">${event.title}</a>`);
-                jQuery('.event-body').html(event.description);
+                jQuery('.event-body').html(`${event.description}</br>${event.location?'@ ':''}${event.location}`);
                 jQuery('#modal-view-event').modal().modal("toggle");
                 $('#deleteeventbtn').click(function () {
                     deleteEvent(event.guuid);

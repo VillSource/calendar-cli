@@ -1,3 +1,4 @@
+import inquirer
 import typer, sys,os
 from datetime import datetime, timedelta
 from monthdelta import monthdelta
@@ -35,7 +36,7 @@ def _callback(
     # console.log(f'confirm : {state}')
 
     if(ctx.invoked_subcommand is None):
-        list()
+        list(on_month =datetime.today().date().month,view=True)
         sys.exit(1)
 
 
@@ -48,12 +49,12 @@ def add(
     location:str = doc_location,
 ):
     'Add your event to google calendar'
-    event = Data(event, detail=details, location=location )
-    event.start = date
-    event.end = date+timedelta(hours=1)
-    print(event)
-    print(event.start,event.end)
-    service.add_event(event)
+    with console.status("[green]Add event to Google Calendar..."):
+        event = Data(event, detail=details, location=location )
+        event.start = date
+        event.end = date+timedelta(hours=1)
+        service.add_event(event)
+    console.log("Added event to Google Calendar")
 
 
 
@@ -65,19 +66,21 @@ def update(
     detail:str = typer.Option(None,'--detail','-d',help='Enter new event\'s detail')
 ):
     'description update func'
-    print(event,location,detail)
-    if not id:
-        print('type "ccal list" to find event ID')
-        return
-    if not (event or location or detail):
-        print('Please enter data to update or "ccal update --help"')
-        return
-    def callback(data):
-        if event: data['summary'] = event
-        if location: data['location'] = location
-        if detail: data['description'] = detail
-        return data
-    print(service.update_event(id,callback,True))
+    with console.status("[green]Updating event..."):
+        # print(event,location,detail)
+        if not id:
+            print('type "ccal list" to find event ID')
+            return
+        if not (event or location or detail):
+            print('Please enter data to update or "ccal update --help"')
+            return
+        def callback(data):
+            if event: data['summary'] = event
+            if location: data['location'] = location
+            if detail: data['description'] = detail
+            return data
+        service.update_event(id,callback,True)
+    console.log("Updated Event")
 
 
 
@@ -96,7 +99,10 @@ def delete(
         console.print(msg,end='')
         if input('Do you want to delete this event [y,N] : ').upper() == 'Y':return True
         return False
-    service.delete_event(id,callback)
+    ids = id.split(',')
+    for id in ids:
+        service.delete_event(id,callback)
+    console.log("Deleted event")
 
 
 
@@ -118,25 +124,39 @@ def list(
         formats = [r'%Y-%m-%d'],
         help='Query events end to this date'
     ),
-    modify:bool = typer.Option(False,'-m','--modify',show_default=False,help='List event then select to edit')
+    view:bool = typer.Option(False,'-v','--view',show_default=False,help='List event then select to see detail')
 ):
     'Query events from Google calendar'
-    print(on_month)
-    print(date_start)
-    print(date_end)
-    print(modify)
+    event:Data = None
+    with console.status("[green]Download event..."):
+        if on_month<1:
+            event:Data = service.list_events(dateMin = date_start, dateMax = date_end, RETURN=True)
+        elif on_month>=1 and on_month<=12:
+            date = datetime.now().replace(month=on_month,day=1,hour=0,minute=0,second=0)
+            event:Data = service.list_events(dateMin = date, dateMax = date+monthdelta(1),RETURN=True)
+            console.log('on date',date.date(),'to',(date+monthdelta(1)).date())
 
-    if on_month<1:
-        event:Data = service.list_events(dateMin = date_start, dateMax = date_end, RETURN=True)
-    elif on_month>=1 and on_month<=12:
-        date = datetime.now().replace(month=on_month,day=1,hour=0,minute=0,second=0)
-        print('on month',date,'to',date+monthdelta(1))
-        event:Data = service.list_events(dateMin = date, dateMax = date+monthdelta(1),RETURN=True)
+    if not event:return console.log('Not found event')
 
-    if event:
-        for i in event:
-            print(i.name, i.uuid)
-    else:print('No events')
+    if(view):
+        questions = [
+            inquirer.List(
+                "event",
+                message=f"Which event do you want to view",
+                choices=[f'{i+1}. {x.name}' for i,x in enumerate(event)]
+            ),
+        ]
+        answers = inquirer.prompt(questions)
+        index = int(answers['event'].split('.')[0])-1
+        event = event[index]
+        print(f'Event  : {event.name}')
+        print(f'ID     : {event.uuid}')
+        print(f'Detail : {event.detail}')
+        print(f'Place  : {event.location}')
+        print()
+
+    else:
+        for i in event:print(f'{i.name}  {i.uuid}')
         
 
 

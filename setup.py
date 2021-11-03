@@ -15,18 +15,15 @@ setup(
     long_description_content_type='text/markdown',
     url = "https://github.com/VillSource/calendar-cli",
     install_requires=[
-        'colorama', 
+        'rich',
+        'typer',
         'inquirer',
-        'eel'   
+        'eel',
+        'julian',
     ],
     entry_points = {
         'console_scripts': [
-            'calendar = calendarcli.__main__:main',
-            'calendar-cli = calendarcli.__main__:main',
-            'ccal = calendarcli.__main__:main',
-            'gcal = calendarcli.calendargui.__main__:main',
-            'anirut = calendarcli.typer_version:main',
-            "ggg = calendarcli.GUI.app:start"
+            'ccal = calendarcli.__mian__:main',
         ]
     })
 
