@@ -5,7 +5,7 @@ calendarcli/data/schedule.db
 .old/
 
 # bath file
-*.bat
+# *.bat
 
 #token
 calendarcli/data/token.json

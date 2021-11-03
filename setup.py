@@ -21,7 +21,10 @@ setup(
         'eel',
         'julian',
         'tzlocal',
-        'monthdelta'
+        'monthdelta',
+        'google-api-python-client',
+        'google-auth-httplib2',
+        'google-auth-oauthlib'
     ],
     entry_points = {
         'console_scripts': [

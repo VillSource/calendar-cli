@@ -182,11 +182,10 @@ def logout():
         
 
 @app.command()
-def tmp():
+def gui():
+    'Run server Web view for calendar'
     from .GUI import app
     app.start()
-    # from .data.db import Database
-    # from .data import google_calendar 
 
 
 
