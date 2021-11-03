@@ -18,7 +18,6 @@ $ ccal [OPTIONS] COMMAND [ARGS]...
 * `list`: Query events from Google calendar
 * `login`: description login func
 * `logout`: description logout func
-* `tmp`
 * `update`: description update func
 
 ## `ccal add`
@@ -34,7 +33,7 @@ $ ccal add [OPTIONS] EVENT [DATE]:[%Y-%m-%d]
 **Arguments**:
 
 * `EVENT`: Enter event name  [required]
-* `[DATE]:[%Y-%m-%d]`: Enter event date  [default: 2021-11-02]
+* `[DATE]:[%Y-%m-%d]`: Enter event date  [default: 2021-11-03]
 
 **Options**:
 
@@ -75,7 +74,7 @@ $ ccal list [OPTIONS]
 * `--on-month INTEGER`: Query events on month[1-12] and current year[2021]
 * `--date-start [%Y-%m-%d]`: Query events start from this date  [default: 2021-11-01]
 * `--date-end [%Y-%m-%d]`: Query events end to this date  [default: 2021-12-01]
-* `-m, --modify`: List event then select to edit
+* `-v, --view`: List event then select to see detail
 * `--help`: Show this message and exit.
 
 ## `ccal login`
@@ -100,18 +99,6 @@ description logout func
 
 ```console
 $ ccal logout [OPTIONS]
-```
-
-**Options**:
-
-* `--help`: Show this message and exit.
-
-## `ccal tmp`
-
-**Usage**:
-
-```console
-$ ccal tmp [OPTIONS]
 ```
 
 **Options**:

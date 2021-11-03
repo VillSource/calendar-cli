@@ -31,5 +31,9 @@ setup(
 
 
 if __name__ == '__main__':
-    from calendarcli.data.setting import setConfig
-    setConfig('calendar','ID','None')
+    from configparser import ConfigParser
+    config = ConfigParser()
+    config.read('./calendarcli/data/setting.ini')
+    config.set('calendar','ID','None')
+    with open('./calendarcli/data/setting.ini', 'w') as f:
+        config.write(f)
