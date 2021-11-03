@@ -92,6 +92,45 @@
 
 
 
+<div id="modal-view-event-update" class="modal modal-top fade calendar-modal">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <form id="update-event">
+        <div class="modal-body">
+        <h4>Add Event Detail</h4>        
+          <div class="form-group">
+            <label>Event name</label>
+            <input type="text" class="form-control" name="name" autocomplete="off">
+          </div>
+          <div class="form-group">
+            <label>Timeline</label>
+            <select class="form-control" name="allDay">
+              <option value="false">Time</option>
+              <option value='true'>All day</option>
+            </select>
+          </div>        
+          <div class="form-group" id="pickDate">
+            <label>Event Date</label>
+            <input type='text' class="datetimepicker form-control" name="date" >
+          </div>        
+          <div class="form-group">
+            <label>Event Description</label>
+            <textarea class="form-control" name="desc"></textarea>
+          </div>
+          <div class="form-group">
+            <label>Location</label>
+            <input type="text" class="form-control" name="location" autocomplete="off">
+          </div>
+      </div>
+        <div class="modal-footer">
+        <button type="submit" class="btn btn-primary" >Save</button>
+        <button type="button" class="btn btn-primary" id='addeventclsID' data-dismiss="modal">Close</button>        
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
+
 
 <!-- partial -->
   <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js'></script>
