@@ -1,3 +1,4 @@
+# [NOTE] My 3td year project at kku Script Programming
 
 # installation step
 
